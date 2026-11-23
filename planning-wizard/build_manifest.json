@@ -1,0 +1,9 @@
+{
+  "verification": "Changed modules compared against embedded executable bytecode",
+  "source_sha256": {
+    "core/templates.py": "a1d23294b0cc0c0a36f582af8588416ace9f4b89fff4a99fca6b3804f1a6b7f8",
+    "wizards/mls/templates_2026.py": "dc5e5232189a6cc7cdc095cba1f5db5df2b9a425f1f5ed8b04351a160c608716",
+    "wizards/mls/pc_ordinance.py": "e6b4e744b033329f492dd456c640e2b453d710c92c0aa563b3b8b989a1a98f73",
+    "tools/test_mls_pc_ordinance.py": "72a55e61132cb5acd86e0f477ade65a0b0a240b5b5d4ca7af360ca9450816797"
+  }
+}

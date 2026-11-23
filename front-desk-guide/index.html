@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>P&amp;D Front Desk Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: search-first hero, then one working column beside a narrow rail; stacks on phones.
+   City of Houston navy carries identity; gold is a signal, used sparingly. System fonts only, so it looks the same on locked-down city PCs. */
+:root {
+  --paper: #f3f6fa;
+  --sheet: #ffffff;
+  --ink: #13233a;            /* navy-black, never pure black */
+  --ink-2: #4e5d70;
+  --rule: #d9e1eb;
+  --accent: #1f4e8c;          /* City navy, working tone */
+  --accent-ink: #ffffff;
+  --accent-soft: #e8eff8;
+  --link: #1f56b3;
+  --gold: #f2b705;            /* City gold: header rule, primary action only */
+  --gold-ink: #13233a;
+  --hdr: #0e2240;             /* deep City navy band */
+  --hdr-ink: #ffffff;
+  --hdr-ink-2: #b9c8dc;
+  --hdr-line: rgb(255 255 255 / .18);
+  --strip: #1b3a63;
+  --strip-ink: #ffffff;
+  --focus: #1f56b3;
+  --mark: #1b3a63;
+  --mark-soft: #eaf0f7;
+  --say-rule: #1f4e8c;
+  --caution: #7a5200;
+  --caution-soft: #fff5d6;
+  --ext: #4e5d70;
+  --ext-soft: #e6ebf1;
+  --warn: #a30000;            /* City red: "different building" only */
+  --warn-soft: #fde8e8;
+  /* team colors: one lightness, different hues */
+  --d1: #1f4e8c; --d2: #0e6e78; --d3: #8a4b1f; --d4: #3c6e2e; --d5: #6b4fa0; --d6: #9c2f5a; --d7: #5a6472;
+  --f-display: Bahnschrift, "DIN Alternate", "Avenir Next Condensed", "Arial Narrow", sans-serif;
+  --f-body: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --f-mono: "Cascadia Mono", Consolas, "SF Mono", ui-monospace, monospace;
+  --radius: 6px;
+  font-size: 106.25%; /* 17px base, readable at desk distance */
+}
+:root[data-size="lg"] { font-size: 125%; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0b1524; --sheet: #111e31; --ink: #e8eef6; --ink-2: #a7b4c6; --rule: #23324a;
+    --accent: #8db4ea; --accent-ink: #0b1524; --accent-soft: #172a45; --link: #9cc0ff; --gold: #f2c230; --gold-ink: #0b1524;
+    --hdr: #08111e; --hdr-ink: #ffffff; --hdr-ink-2: #a7b4c6; --hdr-line: rgb(255 255 255 / .14);
+    --strip: #1b3a63; --strip-ink: #ffffff; --focus: #f2c230;
+    --mark: #9fc0ea; --mark-soft: #15253b; --say-rule: #8db4ea; --caution: #f2c230; --caution-soft: #2b2510;
+    --ext: #c3ccd6; --ext-soft: #1a2638; --warn: #ff8a80; --warn-soft: #3a1414;
+    --d1: #8db4ea; --d2: #6cc5ce; --d3: #e0a47a; --d4: #9ccb8a; --d5: #b8a3e6; --d6: #ee93b6; --d7: #aeb7c3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0b1524; --sheet: #111e31; --ink: #e8eef6; --ink-2: #a7b4c6; --rule: #23324a;
+    --accent: #8db4ea; --accent-ink: #0b1524; --accent-soft: #172a45; --link: #9cc0ff; --gold: #f2c230; --gold-ink: #0b1524;
+    --hdr: #08111e; --hdr-ink: #ffffff; --hdr-ink-2: #a7b4c6; --hdr-line: rgb(255 255 255 / .14);
+    --strip: #1b3a63; --strip-ink: #ffffff; --focus: #f2c230;
+    --mark: #9fc0ea; --mark-soft: #15253b; --say-rule: #8db4ea; --caution: #f2c230; --caution-soft: #2b2510;
+    --ext: #c3ccd6; --ext-soft: #1a2638; --warn: #ff8a80; --warn-soft: #3a1414;
+    --d1: #8db4ea; --d2: #6cc5ce; --d3: #e0a47a; --d4: #9ccb8a; --d5: #b8a3e6; --d6: #ee93b6; --d7: #aeb7c3;
+    color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.55 var(--f-body); }
+a { color: var(--link); }
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; }
+h1:focus, h2:focus { outline: none; }
+
+/* Header */
+.bar { background: var(--hdr); color: var(--hdr-ink); border-bottom: 3px solid var(--gold); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; }
+@media (max-width: 640px) { .bar { position: static; } }
+.bar-in, .wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bar-in { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding-block: 10px; }
+.brand { display: flex; flex-direction: column; line-height: 1.1; margin-right: auto; }
+.brand b { font: 600 1.4rem/1 var(--f-display); }
+.brand span { font: 0.72rem/1.4 var(--f-mono); color: var(--ink-2); text-transform: uppercase; letter-spacing: .08em; margin-top: 3px; }
+.seg { display: inline-flex; gap: 3px; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); padding: 3px; }
+.seg button { border: 0; background: none; padding: 6px 12px; min-height: 36px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.88rem; color: var(--ink-2); }
+.seg button[aria-pressed="true"], .seg button[aria-selected="true"] { background: var(--sheet); color: var(--ink); box-shadow: 0 1px 2px rgb(0 0 0 / .1); }
+.seg.sm button { padding: 2px 9px; min-height: 28px; font-size: 0.8rem; }
+.size-btn { border: 1px solid var(--rule); background: var(--paper); border-radius: var(--radius); min-height: 42px; min-width: 42px; cursor: pointer; font-weight: 700; }
+.size-btn[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+
+.bar .brand span { color: var(--hdr-ink-2); }
+.bar .seg { background: rgb(255 255 255 / .06); border-color: var(--hdr-line); }
+.bar .seg button { color: var(--hdr-ink-2); }
+.bar .seg button[aria-pressed="true"], .bar .seg button[aria-selected="true"] { background: var(--hdr-ink); color: var(--hdr); box-shadow: none; }
+.bar .search input { background: rgb(255 255 255 / .08); border-color: var(--hdr-line); color: var(--hdr-ink); }
+.bar .search input::placeholder { color: var(--hdr-ink-2); }
+.bar .search svg { stroke: var(--hdr-ink-2); }
+.bar .size-btn { background: rgb(255 255 255 / .06); border-color: var(--hdr-line); color: var(--hdr-ink); }
+.bar .size-btn[aria-pressed="true"] { background: var(--gold); border-color: var(--gold); color: var(--gold-ink); }
+.bar :focus-visible { outline-color: var(--gold); }
+.drop { color: var(--ink); }
+
+/* Search */
+.search { position: relative; }
+.search input { width: 100%; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--paper); color: var(--ink); }
+.search svg { position: absolute; top: 50%; transform: translateY(-50%); fill: none; stroke: var(--ink-2); stroke-width: 2; pointer-events: none; }
+.bar .search { flex: 1 1 240px; max-width: 340px; }
+.bar .search input { padding: 8px 12px 8px 34px; font-size: 0.92rem; }
+.bar .search svg { left: 10px; width: 16px; height: 16px; }
+.drop { position: absolute; left: 0; right: 0; top: calc(100% + 4px); background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); box-shadow: 0 8px 24px rgb(0 0 0 / .14); max-height: 60vh; overflow: auto; z-index: 6; }
+.hits button { display: grid; gap: 1px; width: 100%; text-align: left; border: 0; background: none; padding: 9px 12px; cursor: pointer; border-bottom: 1px solid var(--rule); }
+.hits button:last-child { border-bottom: 0; }
+.hits button:hover, .hits button.on { background: var(--accent-soft); }
+.hit-t { font-weight: 600; }
+.hit-s { color: var(--ink-2); font-size: 0.8rem; }
+.none { padding: 10px 12px; color: var(--ink-2); }
+
+.wrap { padding-block: 20px 40px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 22px; align-items: start; }
+@media (max-width: 900px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+.main-col { display: grid; gap: 16px; min-width: 0; }
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius); }
+.eyebrow { font: 0.74rem/1.4 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-2); }
+
+/* Hero (start only) */
+.hero { padding: 24px 24px 22px; }
+.hero h1 { font-size: 2.1rem; line-height: 1.08; font-weight: 600; margin: 4px 0 12px; }
+.hero .search input { padding: 14px 16px 14px 48px; font-size: 1.2rem; background: var(--sheet); border: 2px solid var(--accent); }
+.hero .search svg { left: 16px; width: 22px; height: 22px; stroke: var(--accent); }
+.hero .hits { margin-top: 10px; border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
+.hero .hits button { grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 12px; padding: 11px 14px; }
+.hero .hit-s { text-align: right; }
+.hero .tip { margin: 10px 0 0; color: var(--ink-2); font-size: 0.88rem; }
+
+/* Question */
+.step { padding: 20px 24px 22px; }
+.q { font-size: 1.75rem; line-height: 1.12; font-weight: 600; margin: 4px 0 6px; }
+.step.start .q { font-size: 1.3rem; }
+.help { color: var(--ink-2); margin: 0 0 16px; max-width: 62ch; }
+.opts { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+.opt { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 2px 10px; align-items: start; text-align: left; padding: 12px 14px; min-height: 56px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--sheet); cursor: pointer; transition: border-color .12s, background .12s; }
+.opt:hover { border-color: var(--accent); background: var(--accent-soft); }
+.opt kbd { grid-row: span 2; font: 0.78rem/26px var(--f-mono); width: 26px; height: 26px; text-align: center; border: 1px solid var(--rule); border-radius: 4px; color: var(--ink-2); background: var(--paper); }
+.opt b { font-weight: 600; }
+.opt small { color: var(--ink-2); font-size: 0.84rem; line-height: 1.4; }
+.opt.none-opt { border-style: dashed; background: var(--paper); }
+.nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.btn { border: 1px solid var(--rule); background: var(--sheet); padding: 8px 14px; min-height: 42px; border-radius: var(--radius); cursor: pointer; font-weight: 600; font-size: 0.9rem; }
+.btn:hover { border-color: var(--ink-2); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { filter: brightness(1.08); }
+.hint { font-size: 0.78rem; color: var(--ink-2); margin-top: 14px; }
+.hint kbd { font: 0.72rem var(--f-mono); border: 1px solid var(--rule); border-radius: 3px; padding: 0 4px; }
+
+/* Answer */
+.act { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: center; padding: 18px 24px; background: var(--strip); color: var(--strip-ink); border-radius: var(--radius) var(--radius) 0 0; }
+.act.ext { background: var(--ext-soft); color: var(--ink); border-bottom: 1px solid var(--rule); }
+.act-k { font: 0.74rem/1.3 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; opacity: .85; }
+.act-v { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 2px 0; }
+.big { font: 600 1.7rem/1.15 var(--f-display); overflow-wrap: anywhere; }
+code.big { font-family: var(--f-mono); font-weight: 500; font-size: 1.5rem; }
+code.big.sm { font-size: 1.05rem; }
+.act-s { font-size: 0.92rem; opacity: .92; }
+.flag { font: 700 0.74rem/1 var(--f-body); text-transform: uppercase; letter-spacing: .06em; background: var(--warn-soft); color: var(--warn); padding: 5px 8px; border-radius: 4px; }
+.act .copy { border-color: currentColor; color: inherit; }
+.act-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.act .btn { background: transparent; border-color: currentColor; color: inherit; }
+.act .btn.primary { background: var(--gold); color: var(--gold-ink); border-color: var(--gold); }
+.act.ext .btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.out-head { padding: 18px 24px 14px; border-bottom: 1px solid var(--rule); display: grid; gap: 8px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font: 600 0.78rem/1 var(--f-body); padding: 5px 9px 5px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--ink); width: fit-content; }
+.chip i { width: 9px; height: 9px; border-radius: 50%; background: var(--c, var(--accent)); }
+.chip.ext { background: var(--ext-soft); }
+.out-title { font-size: 1.7rem; line-height: 1.12; font-weight: 600; }
+.out-body { padding: 18px 24px 22px; display: grid; gap: 18px; }
+.say { border-left: 4px solid var(--say-rule); background: var(--mark-soft); padding: 12px 16px; border-radius: 0 var(--radius) var(--radius) 0; }
+.say-h { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.say .eyebrow { color: var(--mark); }
+.say p { margin: 0; font-size: 1.08rem; }
+.say-note { margin-top: 6px; font-size: 0.78rem; color: var(--ink-2); }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+.block h3 { font: 600 0.8rem/1.3 var(--f-body); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-2); margin-bottom: 6px; }
+.block ul { margin: 0; padding-left: 18px; }
+.block li { margin: 3px 0; }
+.contact { display: grid; gap: 5px; }
+.contact div { display: flex; flex-wrap: wrap; gap: 6px; align-items: baseline; }
+.contact span { color: var(--ink-2); font-size: 0.82rem; min-width: 60px; }
+.contact code, .cite { font: 0.85rem var(--f-mono); overflow-wrap: anywhere; }
+.copy { border: 1px solid var(--rule); background: none; border-radius: 4px; font-size: 0.72rem; padding: 2px 7px; cursor: pointer; color: var(--ink-2); }
+.cite { display: inline-block; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px; padding: 2px 7px; }
+.note { font-size: 0.88rem; color: var(--ink-2); border-top: 1px dashed var(--rule); padding-top: 12px; }
+.meta-line { font-size: 0.8rem; color: var(--ink-2); }
+.stale { color: var(--warn); font-weight: 600; }
+.capture { display: grid; gap: 8px; background: var(--paper); border: 1px dashed var(--rule); border-radius: var(--radius); padding: 14px; }
+.capture label { font-weight: 600; }
+.capture textarea { width: 100%; border: 1px solid var(--rule); border-radius: var(--radius); padding: 8px 10px; background: var(--sheet); resize: vertical; }
+.capture .btn { justify-self: start; }
+
+/* Rail */
+.rail { display: grid; gap: 16px; }
+.rail .card { padding: 16px 18px; }
+.trail { list-style: none; margin: 8px 0 0; padding: 0; }
+.trail li { position: relative; padding: 0 0 12px 18px; }
+.trail li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 7px; height: 7px; border: 2px solid var(--accent); border-radius: 50%; background: var(--sheet); }
+.trail li::after { content: ""; position: absolute; left: 8px; top: 17px; bottom: 0; border-left: 1px dashed var(--rule); }
+.trail li:last-child::after { display: none; }
+.trail li:last-child::before { background: var(--accent); }
+.trail button { border: 0; background: none; padding: 0; text-align: left; cursor: pointer; display: block; }
+.trail button:hover .tq { text-decoration: underline; }
+.tq { font-size: 0.78rem; color: var(--ink-2); display: block; }
+.ta { font-weight: 600; font-size: 0.9rem; }
+.empty { color: var(--ink-2); font-size: 0.88rem; margin: 6px 0 0; }
+.quick { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.quick button { border: 1px solid var(--rule); background: var(--paper); padding: 5px 11px; min-height: 34px; border-radius: 99px; cursor: pointer; font-size: 0.84rem; }
+.quick button:hover { border-color: var(--accent); }
+.today { display: grid; gap: 8px; margin-top: 6px; }
+.today .n { font: 600 2rem/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.today ol { margin: 0; padding-left: 20px; font-size: 0.86rem; }
+.today p { margin: 0; font-size: 0.84rem; color: var(--ink-2); }
+.dept { font-size: 0.84rem; display: grid; gap: 3px; margin-top: 6px; }
+.dept code { font: 0.8rem var(--f-mono); }
+
+/* Who does what */
+.sec-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 14px; }
+.sec-head h1 { font-size: 1.9rem; font-weight: 600; }
+.sec-head p { margin: 0; color: var(--ink-2); max-width: 70ch; }
+.divs { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+@media (max-width: 420px) { .divs { grid-template-columns: minmax(0, 1fr); } }
+.div { padding: 18px 20px; display: grid; gap: 10px; align-content: start; border-top: 4px solid var(--c); scroll-margin-top: 90px; }
+.div h2 { font-size: 1.4rem; font-weight: 600; }
+.div p { margin: 0; }
+.div .handles { display: flex; flex-wrap: wrap; gap: 5px; }
+.div .handles button { border: 1px solid var(--rule); background: var(--paper); border-radius: 4px; padding: 3px 8px; font-size: 0.8rem; cursor: pointer; }
+.div .handles button:hover { border-color: var(--c); }
+.divs.ext .div { border-top-style: dashed; }
+.gaps { margin-top: 30px; padding: 18px 20px; border-color: var(--caution); background: var(--caution-soft); }
+.gaps .eyebrow { color: var(--caution); }
+.gaps p { margin: 4px 0 8px; }
+.gaps ul { margin: 0; padding-left: 18px; }
+
+footer { color: var(--ink-2); font-size: 0.78rem; margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+footer label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 16px; border-radius: var(--radius); font-size: 0.9rem; z-index: 10; }
+@media (prefers-reduced-motion: no-preference) { .step, .out { animation: rise .18s ease-out; } }
+@keyframes rise { from { transform: translateY(4px); opacity: .6; } to { transform: none; opacity: 1; } }
+
+/* Printed slip for walk-ins */
+#slip { display: none; }
+@media print {
+  body > *:not(#slip) { display: none !important; }
+  body { background: #fff; color: #000; }
+  #slip { display: block; font: 12pt/1.45 var(--f-body); color: #000; max-width: 6.5in; }
+  #slip h1 { font: 600 20pt var(--f-display); margin: 0 0 4pt; }
+  #slip h2 { font: 600 15pt var(--f-display); margin: 0 0 10pt; }
+  #slip .foot { margin-top: 18pt; border-top: 1px solid #999; padding-top: 6pt; font-size: 9.5pt; }
+}
+</style>
+
+<!-- ============================================================
+     ROUTING DATA: edit this block to change questions & answers.
+     divisions / external: who the visitor can be sent to
+     nodes: a node with "options" is a question; a node with "to" is an answer
+       say = English script, es = Spanish script (drafts: have a bilingual staffer review)
+     everyday: extra words visitors actually say, used by search
+     ============================================================ -->
+<script id="tree-data">
+const P = "https://www.houstontx.gov/planning";
+window.FRONT_DESK = {
+  meta: {
+    dept: "Houston Planning & Development",
+    address: "611 Walker St, 6th Floor, Houston, TX 77002",
+    phone: "832.393.6600",
+    email: "planningdepartment@houstontx.gov",
+    spanish: "832.393.6659",
+    hours: "Mon–Fri, 8:00 a.m.–5:00 p.m.",
+    site: P + "/",
+    verified: "2026-10-15",
+    gaps: [
+      "Deed restriction enforcement: the planning site doesn't say who handles it. This guide sends visitors to 311. Confirm that's the desk's practice.",
+      "Street and alley abandonment: no P&D page covers it. The only lead is a Joint Referral Committee link to Houston Public Works.",
+      "Transportation Planning has no Planner of the Day line in the directory. The MTFP page lists 832.393.6528.",
+      "Variance notice radius: the 2024 variance guide says 300 ft; the FAQ and Planning Commission page say 500 ft.",
+      "Annexation: the site map puts it under Community & Regional Planning, but the directory gives boundary confirmation to GIS.",
+      "Spanish scripts are drafts. Have a bilingual staff member review them."
+    ]
+  },
+
+  // ---------- Teams inside P&D ----------
+  divisions: {
+    dev: {
+      name: "Development Services", tone: "d1",
+      summary: "Subdivision platting under Chapter 42. Reviews plats for the Planning Commission, takes plat variances and special exceptions, records approved plats, and handles hotel/motel, hazardous enterprise and cell tower permits.",
+      handles: ["Subdivision plats & replats (Plat Tracker)", "Chapter 42 plat variances & special exceptions", "Public hearing replats (C3N)", "Plat recordation appointments", "Amending & vacating plats", "Street name changes", "Hotel/motel, hazardous enterprise & tower permits", "\"Is there zoning?\" questions"],
+      notThem: ["Building permits: Houston Permitting Center", "Copies of recorded plats: Harris County Clerk", "Water, sewer and drainage: Houston Public Works"],
+      keywords: "planner of the day platting subdivision plat tracker planning commission",
+      contact: { phone: "832.393.6624", location: "611 Walker, 6th Floor", url: P + "/DevelopRegs/index.html", urlLabel: "Development Regulations", note: "Planner of the Day" }
+    },
+    site: {
+      name: "Site Planning (Permitting)", tone: "d2",
+      summary: "Planning staff stationed at the Houston Permitting Center. They review site plans that come in with building permits for Chapter 42 (lot size, setbacks), Chapter 26 (parking) and Chapter 33 (landscaping), plus sidewalks, multifamily site plans and Walkable Places.",
+      handles: ["Site plan / development plat review", "Setback and lot-size checks for permits", "Parking requirements (Ch. 26)", "Landscaping, trees & shrubs (Ch. 33)", "Sidewalk requirements, modifications, fee in lieu", "Multifamily site plans (ProjectDox)", "Walkable Places applications", "Carports"],
+      notThem: ["The building permit itself and inspections: Houston Permitting Center"],
+      keywords: "site planner of the day setback carport 1002 washington permitting center",
+      contact: { phone: "832.394.8849", location: "Houston Permitting Center, 1002 Washington Ave, 3rd Floor", url: P + "/DevelopRegs/index.html", urlLabel: "Development Regulations", note: "Site Planner of the Day" }
+    },
+    hop: {
+      name: "Historic Preservation (HOP)", tone: "d3",
+      summary: "The Houston Office of Preservation runs the historic preservation ordinance. It reviews Certificates of Appropriateness, processes landmark and district designations, stamps approved plans, and staffs the HAHC and the Appeals Board. As of January 2026 the city has 23 historic districts, 305 landmarks and 213 protected landmarks.",
+      handles: ["\"Is my property historic?\"", "Certificates of Appropriateness (COA)", "Plan stamping for COA projects", "Landmark, Protected Landmark & district designation", "Historic plaques", "Appeals to HPAB", "Heritage Districts"],
+      notThem: ["Historic site tax exemption: Economic Development"],
+      keywords: "historic planner of the day hahc coa landmark district heights",
+      contact: { phone: "832.393.6556", email: "historicpreservation@houstontx.gov", location: "611 Walker, 6th Floor", url: P + "/HistoricPres/index.html", urlLabel: "Historic Preservation", note: "Historic Planner of the Day" }
+    },
+    crp: {
+      name: "Community & Regional Planning", tone: "d4",
+      summary: "Long-range and neighborhood planning. Handles the tools neighborhoods use to protect their character: Special Minimum Lot Size, Special Minimum Building Line and Prohibited Yard Parking areas. Also covers honorary street markers, annexation and ETJ release, Livable Places and Plan Houston.",
+      handles: ["Special Minimum Lot Size / Building Line (SMLS, SMLSA, SMBL)", "Prohibited Yard Parking areas", "Honorary street markers", "Annexation & ETJ release petitions", "Livable Places", "Plan Houston (General Plan)", "ION Community Benefits Agreement"],
+      notThem: ["Super Neighborhoods: Department of Neighborhoods", "Enforcing yard parking or deed restrictions: 311"],
+      keywords: "planner of the day neighborhood civic club hoa",
+      contact: { phone: "832.393.6637", location: "611 Walker, 6th Floor", url: P + "/Min-Lot_Size-Min_Bldg_Line.html", urlLabel: "Min. lot size / building line", note: "Planner of the Day" }
+    },
+    gis: {
+      name: "GIS & Demographics", tone: "d5",
+      summary: "Maintains the city's map data and assigns official City addresses. Makes maps, confirms city limits and annexation boundaries, and publishes population, Census and ACS data and district profiles.",
+      handles: ["Official address assignment", "Map orders", "City limits / annexation boundary confirmation", "Population & Census data", "Council District and Super Neighborhood profiles", "Houston Map Viewer"],
+      keywords: "gis hotline maps addressing demographics census",
+      contact: { phone: "832.393.6555", email: "PDaddressing@houstontx.gov", location: "611 Walker, 6th Floor", url: "https://mycity.maps.arcgis.com/", urlLabel: "City GIS portal", note: "GIS Hotline / Order a Map" }
+    },
+    trans: {
+      name: "Transportation Planning", tone: "d6",
+      summary: "Citywide transportation plans: the Major Thoroughfare & Freeway Plan (MTFP), the Houston Bike Plan, Complete Streets, and corridor studies. It plans streets but doesn't build them. Construction schedules are Houston Public Works.",
+      handles: ["MTFP annual amendments", "Houston Bike Plan & Bicycle Advisory Committee", "Complete Streets", "Project endorsement letters", "I-45 (NHHIP) City role"],
+      notThem: ["Road construction, potholes, signals: Houston Public Works / 311", "State highways: TxDOT", "Buses and rail: METRO"],
+      keywords: "mtfp thoroughfare bike lanes mobility",
+      contact: { phone: "832.393.6528", email: "mobility.planning@houstontx.gov", location: "611 Walker, 6th Floor", url: P + "/transportation/index.html", urlLabel: "Transportation Planning" }
+    },
+    dir: {
+      name: "Director's Office", tone: "d7",
+      summary: "The Director's Office, plus media and open-records contacts. Director: Vonn Tran.",
+      handles: ["Requests for the Director", "Honorary street marker submissions", "Media inquiries (Chief of Staff)"],
+      keywords: "director vonn tran media press chief of staff",
+      contact: { phone: "832.393.6559", location: "611 Walker, 6th Floor", url: P + "/AboutPD/directory.html", urlLabel: "Department directory" }
+    },
+    main: {
+      name: "Main line", tone: "d7", hidden: true,
+      summary: "The department's general line, for requests this guide doesn't cover.",
+      contact: { phone: "832.393.6600", email: "planningdepartment@houstontx.gov", location: "611 Walker, 6th Floor", url: P + "/AboutPD/directory.html", urlLabel: "Department directory" }
+    }
+  },
+
+  // ---------- Not P&D: common referrals ----------
+  external: {
+    hpc: { name: "Houston Permitting Center", summary: "Building permits, plan review for building code, and inspections. P&D's Site Planning staff work inside this building.", handles: ["Building permits", "Inspections", "Sold permits search"], keywords: "building permit inspection code", contact: { phone: "832.394.9000", location: "1002 Washington Ave", url: "https://www.houstonpermittingcenter.org/", urlLabel: "houstonpermittingcenter.org" } },
+    hpw: { name: "Houston Public Works", summary: "Water, sewer, drainage, floodplain (Ch. 19), road construction and right-of-way permits.", handles: ["Water / sewer / drainage", "Floodplain", "Road construction schedules", "Sidewalk café permits", "Honorary marker installation"], keywords: "flood drainage water sewer street construction", contact: { phone: "311 or 713.837.0311", url: "https://houstonpublicworks.org/", urlLabel: "houstonpublicworks.org" } },
+    c311: { name: "Houston 311", summary: "General city services and complaints: code violations, potholes, broken sidewalks, and service requests.", handles: ["Complaints & violations", "Potholes, sidewalk repair", "General city questions"], keywords: "complaint violation report 311", contact: { phone: "3-1-1 or 713.837.0311", email: "311@houstontx.gov", url: "https://houston311.powerappsportals.us/en-US/", urlLabel: "Submit a 311 request" } },
+    county: { name: "Harris County Clerk", summary: "Copies of recorded plats.", handles: ["Recorded plat copies"], keywords: "county clerk recorded copy", contact: { phone: "713.274.6390", email: "CCO.CCInfo@hctx.net", url: "https://www.cclerk.hctx.net/", urlLabel: "Harris County Clerk" } },
+    hcad: { name: "Harris Central Appraisal District", summary: "Property ownership, legal descriptions and appraisal records.", handles: ["Legal descriptions", "Owner lookup"], keywords: "hcad appraisal owner tax legal description", contact: { url: "https://hcad.org/", urlLabel: "hcad.org" } },
+    citysec: { name: "City Secretary", summary: "Accepts original annexation and ETJ release petitions.", handles: ["Original ETJ release petitions"], keywords: "city secretary petition", contact: { location: "City Hall, 900 Bagby, Room P101", url: "https://www.houstontx.gov/citysec/", urlLabel: "City Secretary" } },
+    don: { name: "Department of Neighborhoods", summary: "Super Neighborhoods and civic engagement, through the Mayor's Assistance Office.", handles: ["Super Neighborhoods"], keywords: "super neighborhood civic", contact: { location: "City Hall, 900 Bagby", url: "https://www.houstontx.gov/superneighborhoods/", urlLabel: "Super Neighborhoods" } },
+    ecodev: { name: "Economic Development", summary: "Historic site tax exemption program.", handles: ["Historic site tax exemption"], keywords: "tax exemption historic", contact: { url: "https://www.houstontx.gov/ecodev/historic_site_tax_exemption.html", urlLabel: "Historic site tax exemption" } },
+    records: { name: "Public Information (Open Records)", summary: "Open records requests go through the City's GovQA portal.", handles: ["Public information requests"], keywords: "open records foia public information request", contact: { url: "https://www.houstontx.gov/publicinformation", urlLabel: "Submit a records request" } },
+    txdot: { name: "TxDOT Houston District", summary: "State highways and freeways.", handles: ["State highways"], keywords: "txdot highway freeway", contact: { url: "https://www.txdot.gov/inside-txdot/district/houston.html", urlLabel: "TxDOT Houston" } },
+    metro: { name: "METRO", summary: "Buses, light rail and transit service.", handles: ["Transit"], keywords: "bus rail metro transit", contact: { url: "https://www.ridemetro.org/", urlLabel: "ridemetro.org" } }
+  },
+
+  common: ["plat_new", "site_plan", "permit", "hist_check", "coa", "address", "pc_notice", "no_zoning", "deed"],
+
+  // ---------- Words visitors actually say (search only) ----------
+  everyday: {
+    plat_new: "townhouse townhome split my lot divide my lot two houses on one lot subdivide land new lots combine lots lot line move property line",
+    plat_var: "exception waiver can't meet the rule",
+    devplat_var: "too close to the street front setback encroach permit got flagged",
+    parking_var: "not enough parking fewer parking spaces reduce parking",
+    recordation: "mylar record recording appointment approved plat",
+    amend_plat: "mistake on plat fix plat error on plat cancel plat",
+    plat_lookup: "what is being built next door development next to me plat status lookup",
+    plat_copy: "copy of plat survey of my lot certified copy",
+    plat_general: "can i build buy land vacant lot empty lot raw land",
+    site_plan: "garage apartment addition back house how close can i build what can i build carport lot coverage",
+    permit: "permit remodel roof electrical plumbing inspection inspector permit status contractor",
+    sidewalk: "sidewalk in front of my house curb",
+    landscape: "tree trees planting street trees",
+    multifamily: "apartments apartment complex",
+    special_permits: "hotel motel cell tower chemical storage",
+    walkable: "midtown emancipation walkable",
+    hpw: "flooding flooded drainage ditch water sewer storm",
+    hist_check: "old house historic house heights historic district is my house historic",
+    coa: "replace windows siding porch demolish tear down old house historic addition",
+    hist_stamp: "stamp plans",
+    hist_designate: "landmark plaque nominate",
+    hist_appeal: "denied appeal",
+    hist_tax: "tax break historic",
+    smls: "townhouses being built keep big lots stop townhouses neighborhood lot size",
+    pyp: "cars parked on grass parking on lawn yard parking",
+    complaint: "complain junk car trash pothole broken sidewalk illegal report",
+    deed: "hoa neighbor business in house deed restrictions restricted",
+    superhood: "civic club super neighborhood",
+    crp_general: "what is planned for my neighborhood",
+    address: "new address mail address 911 address wrong address",
+    street_name: "rename street change street name",
+    honorary: "honor sign memorial street sign for a person",
+    abandon: "close alley close street",
+    gis_map: "map maps print a map",
+    city_limits: "inside city limits etj county unincorporated",
+    annex: "leave the city etj release",
+    demographics: "population census statistics data",
+    hcad: "who owns property owner",
+    mtfp: "road widening widen my street thoroughfare",
+    bike: "bike lane bicycle",
+    smls_notice: "letter about lot size letter about building line minimum lot size letter my block",
+    pc_notice: "yellow sign sign in my neighborhood letter in the mail notice public hearing speak at meeting",
+    tower: "cell tower near my house",
+    no_zoning: "zoning zoned zoning verification letter commercial residential open a business",
+    records: "records request open records",
+    media: "reporter news"
+  },
+
+  // ---------- Questions (have "options") and answers (have "to") ----------
+  nodes: {
+    start: {
+      q: "Or pick the closest topic",
+      options: [
+        { label: "Dividing land or a plat", sub: "New lots, replats, recording, plat variances, plat copies", next: "q_plat" },
+        { label: "Building on a property", sub: "Setbacks, parking, sidewalks, landscaping, permits", next: "q_site" },
+        { label: "A historic property", sub: "Historic districts, landmarks, COAs, plan stamps", next: "q_hist" },
+        { label: "Neighborhood protections", sub: "Lot size, building lines, yard parking, deed restrictions", next: "q_hood" },
+        { label: "Streets & addresses", sub: "New address, renaming a street, honorary signs", next: "q_street" },
+        { label: "Maps, data & city limits", sub: "Map orders, population data, annexation, ETJ", next: "q_gis" },
+        { label: "Roads & transportation plans", sub: "Thoroughfare plan, bike lanes, I-45, transit", next: "q_trans" },
+        { label: "A public notice or meeting", sub: "Got a letter or saw a sign; wants to speak", next: "q_meet" },
+        { label: "Something else", sub: "Zoning, building permits, drainage, records, media", next: "q_other" }
+      ]
+    },
+
+    not_listed: {
+      to: "main", short: "Not in the guide", capture: true,
+      title: "Not covered in this guide",
+      what: "Nothing in the guide fits. Send them to the main line, and write down what they asked so the guide can be updated.",
+      say: "Let me connect you with our main line. They'll find the right person for you.",
+      es: "Permítame comunicarle con nuestra línea principal. Ahí le ayudarán a encontrar a la persona correcta.",
+      keywords: "other not listed unknown general"
+    },
+
+    /* ---- Plats ---- */
+    q_plat: {
+      q: "What do they want to do with the land?",
+      help: "Houston regulates how land is divided (Chapter 42), not how it's used.",
+      options: [
+        { label: "Create new lots or replat", sub: "Split, combine or re-lay-out lots; new streets", next: "plat_new" },
+        { label: "Ask for a variance or exception", sub: "Can't meet a Chapter 42 rule", next: "q_var" },
+        { label: "Record an approved plat", sub: "Has approval, needs a recordation appointment", next: "recordation" },
+        { label: "Amend or vacate a plat", sub: "Fix an error, or cancel a recorded plat", next: "amend_plat" },
+        { label: "Check a plat's status or find one", sub: "Pending application, or what's platted", next: "plat_lookup" },
+        { label: "Get a copy of a recorded plat", sub: "Certified or plain copy", next: "plat_copy" },
+        { label: "Not sure if they need a plat", sub: "General land planning question", next: "plat_general" }
+      ]
+    },
+    q_var: {
+      q: "What stage is the project at?",
+      help: "Chapter 42 variances are filed differently depending on whether they ride with a plat or with a building permit.",
+      options: [
+        { label: "Platting / subdividing", sub: "Variance filed with a plat in Plat Tracker", next: "plat_var" },
+        { label: "Getting a building permit", sub: "Site plan was flagged, e.g. building line", next: "devplat_var" },
+        { label: "Parking requirement (Ch. 26)", sub: "Fewer spaces or loading than required", next: "parking_var" }
+      ]
+    },
+    plat_new: {
+      to: "dev", short: "New plat / replat",
+      title: "Subdivision plat or replat",
+      what: "Needed before building permits when land is divided, lots or reserves are created or reconfigured, or streets and easements are dedicated.",
+      say: "Plats are prepared by a licensed surveyor or engineer, who submits them online in Plat Tracker. The Planning Commission reviews them on a two-week cycle. The Planner of the Day can answer questions before they hire someone.",
+      es: "Los planos de subdivisión los prepara un agrimensor o ingeniero con licencia, quien los presenta en línea en Plat Tracker. La Comisión de Planificación los revisa cada dos semanas. El Planificador del Día puede responder preguntas antes de que contrate a alguien.",
+      need: ["A surveyor or civil engineer to prepare the plat", "Title report, plus deed restrictions if required", "Fees are paid in Plat Tracker (set by the City fee schedule each Jan. 1)"],
+      links: [{ label: "Plat Tracker (online submittal)", url: "https://plattracker.powerappsportals.us/SignIn" }, { label: "Plat Submittal Requirements (PDF)", url: P + "/DevelopRegs/docs_pdfs/Plat_Submittal_Requirements.pdf" }, { label: "Development Regulations FAQ", url: P + "/DevelopRegs/faq.html" }],
+      cite: "Code of Ordinances Ch. 42",
+      note: "Residential replats where the original plat had single-family restrictions need a public hearing (C3N): owners within 500 ft get a mailed notice, a sign is posted, and the hearing is about 4 weeks out.",
+      keywords: "subdivide split lot combine lots replat class i ii iii c3n public hearing surveyor"
+    },
+    plat_var: {
+      to: "dev", short: "Plat variance",
+      title: "Chapter 42 variance or special exception (with a plat)",
+      what: "A variance is a hardship-based deviation from Chapter 42, decided by the Planning Commission. A special exception is a smaller adjustment. Either one must be included with the initial plat submittal.",
+      say: "This is filed in Plat Tracker together with the plat and goes to the Planning Commission. Staff encourage a pre-submittal meeting first. Call or email to set one up.",
+      es: "Esta solicitud se presenta en Plat Tracker junto con el plano y la decide la Comisión de Planificación. Se recomienda una reunión previa con el personal; llame o envíe un correo para programarla.",
+      need: ["The plat application in Plat Tracker", "Variance / special exception forms", "Notification package and sign(s) posted on the submittal date (sign photos due by 5 p.m.)"],
+      contact: { email: "planning.variances@houstontx.gov" },
+      links: [{ label: "Variance & Special Exception Guide (PDF)", url: "https://houstontx.gov/planning/Forms/devregs/Variance%20Guide%20copy%202024.pdf" }, { label: "Planning Commission meetings & schedule", url: P + "/Commissions/commiss_plan.html" }],
+      cite: "Ch. 42, Secs. 42-81 (variance) & 42-82 (special exception)",
+      note: "Complete package due by 11:00 a.m. on the submittal date in the Planning Commission schedule. Not allowed on a Class III final plat.",
+      keywords: "variance special exception building line lot size right of way hardship"
+    },
+    devplat_var: {
+      to: "site", short: "Building-line variance",
+      title: "Development plat variance (at building permit)",
+      what: "A Chapter 42 variance requested during site plan review for a building permit, most often for a building line (setback). It starts at the Permitting Center. Once it's complete, staff take it to the Planning Commission.",
+      say: "Email the development plat variance form to the variances inbox. It goes to the Planning Commission, so they'll need to mail notices and post a sign.",
+      es: "Envíe por correo electrónico el formulario de variación del plano de desarrollo al buzón de variaciones. La decide la Comisión de Planificación, así que tendrá que enviar avisos por correo y colocar un letrero.",
+      need: ["Development Plat Variance application form", "Notification package and 4×8 ft sign posted on the submittal date"],
+      contact: { email: "planning.variances@houstontx.gov" },
+      links: [{ label: "Development plat variance guide (PDF)", url: "https://houstontx.gov/planning/DevelopRegs/docs_pdfs/2026/Variance-and-Special-Exception-Requests-Development-Plats-2026-August.pdf" }, { label: "Variance form (PDF)", url: "https://houstontx.gov/planning/Forms/devregs/variance_devplat%20application.pdf" }],
+      cite: "Ch. 42",
+      note: "Due by 11:00 a.m. on the submittal date in the Planning Commission schedule.",
+      keywords: "setback building line variance site plan flagged permit"
+    },
+    parking_var: {
+      to: "site", short: "Parking variance",
+      title: "Off-street parking variance (Chapter 26)",
+      what: "A request to provide fewer parking or loading spaces than Chapter 26 requires. The Planning Commission decides it. Smaller changes may qualify for an administrative modification, Special Parking Area, or shared/off-site parking.",
+      say: "Email the parking variance application to the variances inbox. It goes to the Planning Commission. Owners within 800 ft are notified, and a sign goes up on the submittal date.",
+      es: "Envíe por correo electrónico la solicitud de variación de estacionamiento al buzón de variaciones. La decide la Comisión de Planificación. Se notifica a los propietarios dentro de 800 pies y se coloca un letrero en la fecha de entrega.",
+      need: ["Parking variance application", "Sign posted on the submittal date (template on the site)"],
+      contact: { email: "planning.variances@houstontx.gov" },
+      links: [{ label: "Off-Street Parking ordinance page", url: P + "/Off-Street-Parking-Ordinance.html" }, { label: "Parking variance application (PDF)", url: "https://houstontx.gov/planning/DevelopRegs/docs_pdfs/2026/Parking-variance-application-form.pdf" }],
+      cite: "Ch. 26, Art. VIII; Sec. 26-563",
+      note: "Due by 11:00 a.m. on the Chapter 26 submittal date. If that date is a City holiday, submit the Friday before.",
+      keywords: "parking spaces loading shared parking special parking area administrative modification"
+    },
+    recordation: {
+      to: "dev", short: "Record a plat",
+      title: "Plat recordation appointment",
+      what: "After a plat is approved, it's recorded in person by appointment on the 6th floor at 611 Walker.",
+      say: "Request the appointment in Plat Tracker. Bring the original mylar, and when you arrive, call your planner from the phone list in the 6th-floor lobby. There's a $50 fee for no-shows, cancellations under 48 business hours, or arriving more than 15 minutes late.",
+      es: "Solicite la cita en Plat Tracker. Traiga el mylar original y, al llegar, llame a su planificador desde la lista de teléfonos en el vestíbulo del 6.º piso. Hay un cargo de $50 si no se presenta, si cancela con menos de 48 horas hábiles o si llega más de 15 minutos tarde.",
+      need: ["Original mylar", "Recordation checklists and documents (Forms page)", "Fees paid in Plat Tracker"],
+      contact: { phone: "832.393.6632", email: "planning.payments@houstontx.gov", note: "Recordation payments" },
+      links: [{ label: "Plat recordation page", url: P + "/DevelopRegs/Subdivision-Plat-Recordation.html" }, { label: "Plat Tracker", url: "https://plattracker.powerappsportals.us/SignIn" }],
+      note: "The phone above is the payments line for recordation. For other questions, use the Development Services Planner of the Day, 832.393.6624.",
+      keywords: "record mylar appointment recordation payment"
+    },
+    amend_plat: {
+      to: "dev", short: "Amending plat",
+      title: "Amending or vacating plat",
+      what: "An amending plat corrects or adjusts a recorded plat. A vacating plat cancels one and is processed like a Class III plat.",
+      say: "Amending plats are submitted by email, not Plat Tracker. Fees are paid by phone or email. Vacating plats go through Plat Tracker. Check the guides first.",
+      es: "Los planos de enmienda se envían por correo electrónico, no por Plat Tracker, y el pago se hace por teléfono o correo. Los planos de anulación se tramitan en Plat Tracker. Revise primero las guías.",
+      need: ["Amending plat documents (by email)", "Fee payment: 832.393.6632 or planning.payments@houstontx.gov"],
+      contact: { email: "planning.amendingplats@houstontx.gov" },
+      links: [{ label: "Amending Plat Guide (PDF)", url: "https://www.houstontx.gov/planning/Forms/devregs/Amending%20Plat%20Guide_2024.pdf" }, { label: "Vacating Plat Guide (PDF)", url: "https://www.houstontx.gov/planning/Forms/devregs/Vacating-Plat-Reference-Guide.pdf" }],
+      cite: "Ch. 42",
+      keywords: "amending vacating correct error cancel plat"
+    },
+    plat_lookup: {
+      to: "dev", short: "Plat status",
+      title: "Look up a plat or application status",
+      what: "Pending and approved plats can be found on the Houston Map Viewer or the Plat Tracker map. Planning Commission agendas are posted in Plat Tracker about 3 business days before each meeting.",
+      say: "You can look it up yourself on the city map viewer or the Plat Tracker map. If you need more detail, the Planner of the Day can help.",
+      es: "Puede buscarlo usted mismo en el visor de mapas de la Ciudad o en el mapa de Plat Tracker. Si necesita más detalles, el Planificador del Día le puede ayudar.",
+      links: [{ label: "Plat Tracker agendas & documents", url: "https://plattracker.powerappsportals.us/agenda-documents/" }, { label: "City GIS portal / Map Viewer", url: "https://mycity.maps.arcgis.com/" }],
+      keywords: "status lookup find plat pending agenda map viewer"
+    },
+    plat_copy: {
+      to: "county", short: "Plat copy",
+      title: "Copy of a recorded plat",
+      what: "Recorded plats are kept by Harris County, not the City.",
+      say: "Recorded plat copies come from the Harris County Clerk. Here's their phone and email.",
+      es: "Las copias de planos registrados las entrega la Secretaría del Condado de Harris (Harris County Clerk). Aquí tiene su teléfono y correo.",
+      keywords: "copy certified recorded plat county clerk"
+    },
+    plat_general: {
+      to: "dev", short: "Do I need a plat?",
+      title: "General platting question",
+      what: "Undeveloped land must be platted before development. Already-platted land may need a replat to subdivide further or change use (for example, single-family to multifamily). A site plan is required for every building in the city limits.",
+      say: "The Planner of the Day can talk through whether a plat is needed. Most owners end up hiring a surveyor or engineer to do the submittal.",
+      es: "El Planificador del Día le puede explicar si necesita un plano. La mayoría de los propietarios contratan a un agrimensor o ingeniero para presentarlo.",
+      links: [{ label: "Development Regulations FAQ", url: P + "/DevelopRegs/faq.html" }, { label: "Platting process flow chart (PDF)", url: "https://www.houstontx.gov/planning/DevelopRegs/docs_pdfs/plat_process-050426.pdf" }],
+      cite: "Ch. 42",
+      keywords: "do i need a plat land planning question"
+    },
+
+    /* ---- Building on a property ---- */
+    q_site: {
+      q: "What part of the project are they asking about?",
+      help: "Planning reviews the site plan. The building permit itself is the Houston Permitting Center.",
+      options: [
+        { label: "Setbacks, lot size or site plan review", sub: "What can fit on the lot; carports", next: "site_plan" },
+        { label: "The building permit or inspections", sub: "Applying, status, building code", next: "permit" },
+        { label: "Parking requirements", sub: "How many spaces; reducing them", next: "q_parking" },
+        { label: "Sidewalks", sub: "Required sidewalk, waiver, fee in lieu", next: "sidewalk" },
+        { label: "Landscaping or trees", sub: "Street trees, shrubs (Ch. 33)", next: "landscape" },
+        { label: "Apartments / multifamily", sub: "Multifamily site plan", next: "multifamily" },
+        { label: "Hotel, hazardous use or cell tower", sub: "Special Planning permits", next: "special_permits" },
+        { label: "Walkable Places / transit corridor", sub: "Designation or TOD rules", next: "walkable" },
+        { label: "Flooding, drainage, water or sewer", sub: "Infrastructure", next: "hpw" }
+      ]
+    },
+    q_parking: {
+      q: "Do they know their required count, or want to reduce it?",
+      options: [
+        { label: "Want to know the requirement", sub: "How many spaces they need", next: "site_plan" },
+        { label: "Want to provide fewer spaces", sub: "Variance or modification", next: "parking_var" }
+      ]
+    },
+    site_plan: {
+      to: "site", short: "Site plan / setbacks",
+      title: "Site plan review (setbacks, lot size, parking)",
+      what: "Every building permit in the city limits includes a Planning review of the site plan: lot size, setbacks and building lines, parking, landscaping and access. This happens at the Houston Permitting Center.",
+      say: "Site plan questions go to the Site Planner of the Day at the Permitting Center, 1002 Washington, 3rd floor. They can tell you what fits on the lot before you apply.",
+      es: "Las preguntas sobre el plano del sitio las atiende el Planificador del Sitio del Día en el Centro de Permisos, 1002 Washington, 3.er piso. Le pueden decir qué cabe en el lote antes de solicitar.",
+      need: ["Address or legal description", "Survey or proposed site plan if they have one"],
+      links: [{ label: "Development site plan requirements (PDF)", url: "https://www.houstontx.gov/planning/Forms/devregs/DevSite_Plan_Reqs.pdf" }, { label: "Development Regulations (carport guidelines)", url: P + "/DevelopRegs/index.html" }],
+      cite: "Ch. 42 · Ch. 26 · Ch. 33",
+      keywords: "setback building line lot size site plan carport garage addition what can i build"
+    },
+    permit: {
+      to: "hpc", short: "Building permit",
+      title: "Building permit, plan review or inspection",
+      what: "Building permits, building code review and inspections belong to the Houston Permitting Center, not Planning. Planning's Site Planning staff work in the same building.",
+      say: "Building permits are handled at the Houston Permitting Center, 1002 Washington Ave. You can apply and check status online.",
+      es: "Los permisos de construcción se tramitan en el Centro de Permisos de Houston, 1002 Washington Ave. Puede solicitar y revisar el estado en línea.",
+      links: [{ label: "Sold permits search", url: "https://www.houstonpermittingcenter.org/sold-permits-search" }],
+      keywords: "building permit inspection code status remodel roof electrical"
+    },
+    sidewalk: {
+      to: "site", short: "Sidewalks",
+      title: "Sidewalk requirements, modification or fee in lieu",
+      what: "New single-family homes, development plats, new or expanded parking lots, and replacing more than 20 ft of sidewalk can all trigger sidewalk review. If the standards can't be met, the owner can request a modification (decided by the Sidewalk Committee) or pay a fee in lieu where it qualifies.",
+      say: "Sidewalk questions go to Site Planning at the Permitting Center. Modification and fee-in-lieu requests are online forms.",
+      es: "Las preguntas sobre aceras las atiende Planificación del Sitio en el Centro de Permisos. Las solicitudes de modificación y de pago en lugar de acera se hacen con formularios en línea.",
+      contact: { email: "PD.sidewalkandrealm@houstontx.gov" },
+      links: [{ label: "Sidewalk requirements", url: P + "/sidewalk-regulations.html" }, { label: "Fee in lieu application", url: "https://houstontx.gov/planning/sidewalk-fee-application-in-lieu.html" }, { label: "Modification request", url: "https://houstontx.gov/planning/sidewalk-modification-pedestrian-realm.html" }],
+      cite: "Ch. 40, Art. XXII (Secs. 40-553 to 40-561)",
+      note: "Broken or damaged existing sidewalks are a 311 repair request, not Planning.",
+      keywords: "sidewalk fee in lieu waiver modification pedestrian realm"
+    },
+    landscape: {
+      to: "site", short: "Landscaping",
+      title: "Landscaping, trees & shrubs",
+      what: "Street trees and shrub requirements are reviewed with the site plan. There's a landscape analysis form, and a variance form for plans that can't comply.",
+      say: "Landscaping is reviewed with the site plan at the Permitting Center. The Site Planner of the Day can explain what's required.",
+      es: "El paisajismo se revisa junto con el plano del sitio en el Centro de Permisos. El Planificador del Sitio del Día le puede explicar los requisitos.",
+      links: [{ label: "Tree & shrub ordinance", url: P + "/DevelopRegs/tree_shrub.html" }, { label: "Landscape plan variance form (PDF)", url: "https://www.houstontx.gov/planning/Forms/devregs/Variance_Form_Landscape_Plan_Variance_2019.pdf" }],
+      cite: "Ch. 33, Art. V",
+      keywords: "trees shrubs landscape street trees"
+    },
+    multifamily: {
+      to: "site", short: "Multifamily",
+      title: "Multifamily site plan",
+      what: "Since Sept. 15, 2023, multifamily site plans are submitted electronically through the Permitting Center's ProjectDox and reviewed jointly by Planning and the Fire Marshal.",
+      say: "Multifamily site plans are submitted through ProjectDox at the Permitting Center. The Site Planner of the Day can help with requirements.",
+      es: "Los planos de sitio multifamiliares se presentan por ProjectDox en el Centro de Permisos. El Planificador del Sitio del Día le puede ayudar con los requisitos.",
+      links: [{ label: "Multifamily review process", url: P + "/DevelopRegs/review_process.html" }],
+      cite: "Ch. 42",
+      keywords: "apartment multifamily projectdox fire marshal"
+    },
+    special_permits: {
+      to: "dev", short: "Hotel / tower permit",
+      title: "Hotel/motel, hazardous enterprise or cell tower permit",
+      what: "These uses need a Planning permit in addition to the building permit. Hotel/motel variances go to the Planning Commission. Tower waivers and protested tower permits go to the Tower Commission.",
+      say: "These need a separate Planning permit. Forms are on the Forms page. For cell towers, email the tower inbox.",
+      es: "Estos usos necesitan un permiso aparte de Planificación. Los formularios están en la página de formularios. Para torres celulares, escriba al buzón de torres.",
+      contact: { email: "planning.tower@houstontx.gov" },
+      links: [{ label: "Forms page", url: P + "/Forms/" }, { label: "Tower Commission", url: P + "/Commissions/commiss_tower.html" }, { label: "Hotel/motel application (PDF)", url: "https://www.houstontx.gov/planning/Forms/devregs/Hotel-Motel-App.pdf" }],
+      cite: "Ch. 28, Art. VI (hotel/motel), Art. VII (hazardous), Secs. 28-521–543 (towers)",
+      note: "Hotel/motel questions: planning.hotel-motel@houstontx.gov",
+      keywords: "hotel motel hazardous enterprise cell tower antenna tower commission protest"
+    },
+    walkable: {
+      to: "site", short: "Walkable Places",
+      title: "Walkable Places / transit-oriented development",
+      what: "Property owners can apply to designate a Walkable Place (pilot areas: Emancipation Ave, Midtown, Hogan/Lorraine). That brings design standards, more buildable area and adjusted parking. A pre-submittal meeting is required.",
+      say: "A pre-submittal meeting is required before applying. Email walkableplaces@houstontx.gov or call the main line to set one up.",
+      es: "Se requiere una reunión previa antes de solicitar. Escriba a walkableplaces@houstontx.gov o llame a la línea principal para programarla.",
+      contact: { email: "walkableplaces@houstontx.gov", phone: "832.393.6600", note: "Main line" },
+      links: [{ label: "Walkable Places program", url: P + "/walkable_places/index.html" }, { label: "Walkable Places FAQ", url: P + "/walkable_places/walkable-places-faq.html" }],
+      keywords: "walkable places tod transit oriented"
+    },
+    hpw: {
+      to: "hpw", short: "Drainage / utilities",
+      title: "Flooding, drainage, water, sewer or road construction",
+      what: "Planning doesn't review utilities, drainage, floodplain or traffic. Those are Houston Public Works (Office of the City Engineer for floodplain and design standards).",
+      say: "That's Houston Public Works. Call 311 or go to their website.",
+      es: "Eso lo atiende Obras Públicas de Houston (Houston Public Works). Llame al 311 o visite su sitio web.",
+      links: [{ label: "Office of the City Engineer", url: "https://www.houstonpermittingcenter.org/office-city-engineer" }],
+      cite: "Ch. 19 (Floodplain) – Public Works",
+      keywords: "flood floodplain drainage water sewer utility traffic road construction"
+    },
+
+    /* ---- Historic ---- */
+    q_hist: {
+      q: "What's going on with the historic property?",
+      options: [
+        { label: "Not sure if it's historic", sub: "Is it a landmark or in a district?", next: "hist_check" },
+        { label: "Planning exterior work", sub: "Windows, additions, new build, move, demolish", next: "coa" },
+        { label: "Has a COA, needs plans stamped", sub: "Before the building permit", next: "hist_stamp" },
+        { label: "Wants to designate a landmark or district", sub: "Or order a plaque", next: "hist_designate" },
+        { label: "Disagrees with an HAHC decision", sub: "Appeal", next: "hist_appeal" },
+        { label: "Historic tax exemption", sub: "Property tax relief", next: "hist_tax" }
+      ]
+    },
+    hist_check: {
+      to: "hop", short: "Is it historic?",
+      title: "Is my property historic?",
+      what: "Houston has 23 historic districts, 305 landmarks and 213 protected landmarks (January 2026). The interactive map shows whether a property is in a district and whether it's contributing.",
+      say: "You can check the 'Is my property historic?' map on the Historic Preservation page, or call the Historic Planner of the Day.",
+      es: "Puede revisar el mapa '¿Es histórica mi propiedad?' en la página de Preservación Histórica, o llamar al Planificador Histórico del Día.",
+      need: ["Property address"],
+      links: [{ label: "Historic Preservation (map link)", url: P + "/HistoricPres/index.html" }, { label: "Plan a Historic Project", url: P + "/HistoricPres/plan_project.html" }],
+      keywords: "historic district landmark contributing map heights"
+    },
+    coa: {
+      to: "hop", short: "COA",
+      title: "Certificate of Appropriateness (COA)",
+      what: "Required for exterior alterations, additions, new construction, relocation or demolition at a landmark or a contributing building in a historic district. New construction on vacant or noncontributing sites in a district also needs one. Ordinary maintenance and repair is exempt.",
+      say: "Apply in the Historic Preservation Tracker. Applications are due by noon, 22 days before the monthly HAHC meeting. A free pre-application design review is available, so call the Historic Planner of the Day first.",
+      es: "Solicítelo en el Historic Preservation Tracker. La solicitud vence al mediodía, 22 días antes de la reunión mensual de la HAHC. Hay una revisión de diseño previa gratuita; llame primero al Planificador Histórico del Día.",
+      need: ["Application packet for the project type (alteration, new construction, accessory, relocation, demolition)", "Proof of deed restriction compliance, if applicable"],
+      links: [{ label: "COA page", url: P + "/HistoricPres/certofapp.html" }, { label: "Historic Preservation Tracker", url: "https://histplattracker.powerappsportals.us/SignIn" }, { label: "2026 COA fees (PDF)", url: "https://houstontx.gov/planning/HistoricPres/docs_pdfs/2026-COA-Fees-Information.pdf" }],
+      cite: "Ch. 33, Art. VII",
+      note: "Approved projects may qualify for a 50% building-permit fee discount.",
+      keywords: "certificate of appropriateness coa windows addition demolition demolish historic hahc"
+    },
+    hist_stamp: {
+      to: "hop", short: "COA plan stamp",
+      title: "Stamp plans for an approved COA",
+      what: "HOP must stamp plans for a COA-approved project before the Permitting Center issues the building permit.",
+      say: "Plan stamping is by appointment with Historic Preservation. Call or email to schedule.",
+      es: "El sellado de planos es con cita con Preservación Histórica. Llame o escriba para programarla.",
+      need: ["Approved COA", "Plans matching the approval"],
+      keywords: "stamp plans approved coa appointment"
+    },
+    hist_designate: {
+      to: "hop", short: "Landmark designation",
+      title: "Landmark, district designation or plaque",
+      what: "Owners can apply for Landmark, Protected Landmark or Archaeological Site designation. Neighborhoods can apply to create a historic district. HAHC reviews designations. Plaques are ordered with a separate form.",
+      say: "The application forms are online. Historic Preservation staff can walk you through the process first.",
+      es: "Los formularios de solicitud están en línea. El personal de Preservación Histórica le puede explicar el proceso primero.",
+      links: [{ label: "Landmark designation application (PDF)", url: "https://www.houstontx.gov/planning/Forms/hist/designated_lndmrk_app.pdf" }, { label: "Historic district application (PDF)", url: "https://www.houstontx.gov/planning/Forms/hist/Hist_Des_App.pdf" }, { label: "Plaque order form (PDF)", url: "https://www.houstontx.gov/planning/Forms/hist/Historic_Plaque_Order_Form.pdf" }],
+      keywords: "landmark protected landmark designate nomination district plaque archaeological"
+    },
+    hist_appeal: {
+      to: "hop", short: "Historic appeal",
+      title: "Appeal an HAHC decision",
+      what: "The Historic Preservation Appeals Board (5 members) hears appeals of HAHC decisions. Written notice is due within 10 days of the decision (demolitions: 90–120 days). An email to HOP staff counts. The hearing is set within 45 days.",
+      say: "Email Historic Preservation within 10 days of the decision to file the appeal. You'll need to post a sign at least 10 days before the hearing.",
+      es: "Escriba a Preservación Histórica dentro de los 10 días siguientes a la decisión para presentar la apelación. Debe colocar un letrero al menos 10 días antes de la audiencia.",
+      links: [{ label: "Appeals Board (HPAB)", url: P + "/Commissions/HPAB.html" }],
+      note: "HPAB doesn't accept new information. The appeal is based on the existing record.",
+      keywords: "appeal hpab denied hahc decision"
+    },
+    hist_tax: {
+      to: "ecodev", short: "Historic tax exemption",
+      title: "Historic site tax exemption",
+      what: "The historic site tax exemption is run by Economic Development, not Planning.",
+      say: "The tax exemption program is with the City's Economic Development office. Here's their page.",
+      es: "El programa de exención de impuestos lo maneja la oficina de Desarrollo Económico de la Ciudad. Aquí tiene su página.",
+      keywords: "tax exemption historic property tax"
+    },
+
+    /* ---- Neighborhood ---- */
+    q_hood: {
+      q: "What does the neighborhood or resident want?",
+      options: [
+        { label: "Keep lots large or homes set back", sub: "Minimum lot size / building line", next: "smls" },
+        { label: "Ban parking on front yards", sub: "Create a yard parking area", next: "pyp" },
+        { label: "Report a violation", sub: "Yard parking, junk, code complaint", next: "complaint" },
+        { label: "Deed restrictions", sub: "Neighbor violating restrictions", next: "deed" },
+        { label: "Super Neighborhood / civic club", sub: "Neighborhood organizations", next: "superhood" },
+        { label: "What's planned near me", sub: "General neighborhood planning question", next: "crp_general" }
+      ]
+    },
+    smls: {
+      to: "crp", short: "Min. lot size",
+      title: "Special Minimum Lot Size or Building Line",
+      what: "Neighborhood-initiated protections that keep new lots from being smaller than the existing pattern, or keep new construction behind an established front building line. Applies by block (SMLS, SMBL) or area (SMLSA, at least 5 contiguous blocks). Existing homes aren't affected.",
+      say: "Talk with Community & Regional Planning staff before starting an application. They'll check whether the block qualifies and explain the petition.",
+      es: "Hable con el personal de Planificación Comunitaria y Regional antes de empezar una solicitud. Le dirán si la cuadra califica y le explicarán la petición.",
+      links: [{ label: "Min. lot size / building line page", url: P + "/Min-Lot_Size-Min_Bldg_Line.html" }, { label: "Application forms", url: "https://www.houstontx.gov/planning/docs_pdfs/MLS-MBL-Application2026/" }],
+      cite: "Ch. 42",
+      note: "The standard must already be met by 70% of properties (60% in historic districts). There are renewal and rescind forms too.",
+      keywords: "minimum lot size building line smls smlsa smbl townhouse block petition"
+    },
+    pyp: {
+      to: "crp", short: "Yard parking area",
+      title: "Prohibited Yard Parking requirement area",
+      what: "Lets single-family neighborhoods ban parking on unpaved front and side yards. An HOA or civic club can apply, or a homeowner with 60% owner support. The area must be at least 60% single-family and 5 contiguous blockfaces.",
+      say: "Applications are accepted only on the first two business days of each month, before 5 p.m. The applications coordinator is the contact.",
+      es: "Las solicitudes solo se aceptan los primeros dos días hábiles de cada mes, antes de las 5 p.m. La persona de contacto es la coordinación de solicitudes.",
+      contact: { email: "planningdepartment@houstontx.gov", phone: "832.393.6600", note: "Main line, ask for the applications coordinator" },
+      links: [{ label: "Prohibited Yard Parking page", url: P + "/Prohibited-Yard-Parking-Ordinance.html" }],
+      cite: "Ch. 28, Art. X",
+      note: "After filing: notice within 10 days, a 20-day protest period, then the Director (or a Hearing Officer if protested) and City Council. Lasts 20 years.",
+      keywords: "yard parking prohibited pyp cars on lawn grass"
+    },
+    complaint: {
+      to: "c311", short: "Report violation",
+      title: "Report a violation or complaint",
+      what: "Planning doesn't enforce code violations. Complaints go through 311.",
+      say: "Please report it to 311 by phone, or online so you get a tracking number.",
+      es: "Por favor repórtelo al 311 por teléfono, o en línea para recibir un número de seguimiento.",
+      keywords: "complaint report violation junk code enforcement yard parking violation"
+    },
+    deed: {
+      to: "c311", short: "Deed restrictions",
+      title: "Deed restriction enforcement",
+      what: "Houston has no zoning. Deed restrictions are the only thing that limits land use, and they're private covenants, not Planning rules. Planning only checks them when a replat is filed.",
+      say: "Planning doesn't enforce deed restrictions. Please call 311 and ask for deed restriction enforcement.",
+      es: "Planificación no hace cumplir las restricciones de escritura. Por favor llame al 311 y pida la unidad de cumplimiento de restricciones de escritura.",
+      note: "Confirm this referral: the planning website doesn't say who enforces deed restrictions.",
+      keywords: "deed restriction covenant hoa violation neighbor business"
+    },
+    superhood: {
+      to: "don", short: "Super Neighborhoods",
+      title: "Super Neighborhoods",
+      what: "The Super Neighborhood program is run by the Department of Neighborhoods. Planning publishes Super Neighborhood demographic profiles.",
+      say: "Super Neighborhoods are with the Department of Neighborhoods at City Hall. For data on your area, GIS & Demographics publishes profiles.",
+      es: "Los Supervecindarios (Super Neighborhoods) los maneja el Departamento de Vecindarios en el Ayuntamiento. Para datos de su zona, GIS y Demografía publica perfiles.",
+      keywords: "super neighborhood civic club council"
+    },
+    crp_general: {
+      to: "crp", short: "Neighborhood planning",
+      title: "Neighborhood or long-range planning question",
+      what: "Questions about Plan Houston, Livable Places, community plans and what's planned for an area.",
+      say: "Community & Regional Planning's Planner of the Day can help.",
+      es: "El Planificador del Día de Planificación Comunitaria y Regional le puede ayudar.",
+      links: [{ label: "Plan Houston", url: P + "/GeneralPlan/index.html" }, { label: "Livable Places", url: P + "/livable_42_26.html" }],
+      keywords: "plan houston general plan livable places community plan"
+    },
+
+    /* ---- Streets & addresses ---- */
+    q_street: {
+      q: "What do they need?",
+      options: [
+        { label: "A new or corrected address", sub: "Address assignment or verification", next: "address" },
+        { label: "Rename a street", sub: "Official street name change", next: "street_name" },
+        { label: "Honorary street sign", sub: "Honor a person with a marker", next: "honorary" },
+        { label: "Close or abandon a street/alley", sub: "Right-of-way abandonment", next: "abandon" },
+        { label: "Repair a street or sidewalk", sub: "Potholes, broken sidewalk", next: "complaint" }
+      ]
+    },
+    address: {
+      to: "gis", short: "Address",
+      title: "Address assignment or verification",
+      what: "GIS assigns official City addresses and coordinates them with emergency responders.",
+      say: "Email the addressing team or call the GIS hotline.",
+      es: "Escriba al equipo de direcciones o llame a la línea de GIS.",
+      contact: { email: "PDaddressing@houstontx.gov" },
+      links: [{ label: "Addressing & Street Guidebook (PDF)", url: "https://houstontx.gov/planning/DevelopRegs/docs_pdfs/Addressing-Street_Guidebook.pdf" }],
+      note: "Mail: Addressing, P&D, P.O. Box 1562, Houston, TX 77251-1562.",
+      keywords: "address new address assignment verify 911"
+    },
+    street_name: {
+      to: "dev", short: "Street name change",
+      title: "Street name change",
+      what: "An abutting owner applies with a petition (75% of abutting owners for public streets, 51% for private) and a title report. After a 30-day comment period, City Council decides. The new name takes effect 90 days after passage, and the applicant pays for signs.",
+      say: "Start by emailing a Preliminary Check form to the addressing inbox to make sure the name is allowed.",
+      es: "Empiece enviando por correo electrónico un formulario de revisión preliminar al buzón de direcciones para confirmar que el nombre está permitido.",
+      contact: { email: "PDaddressing@houstontx.gov" },
+      links: [{ label: "Street name change form (PDF)", url: "https://www.houstontx.gov/planning/DevelopRegs/docs_pdfs/Street-Name-Changes-Form.pdf" }],
+      note: "Names of people are allowed only if the person is deceased. No duplicates of existing street names. For honoring someone without renaming, see Honorary street sign.",
+      keywords: "rename street name change petition"
+    },
+    honorary: {
+      to: "crp", short: "Honorary marker",
+      title: "Honorary street marker",
+      what: "Honors a deceased person who contributed to the community. Needs a resident petition and/or Council Member support. The Director recommends it to City Council, and Public Works installs it for a fee.",
+      say: "Submit the request to the Planning Director at 611 Walker, 6th floor. Department staff can explain the process.",
+      es: "Presente la solicitud al Director de Planificación en 611 Walker, 6.º piso. el personal del departamento le puede explicar el proceso.",
+      contact: { phone: "832.393.6600", email: "planningdepartment@houstontx.gov", note: "Director's office" },
+      links: [{ label: "Honorary marker process (PDF)", url: "https://houstontx.gov/planning/Forms/devregs/Honorary-Street-Marker-Process.pdf" }],
+      note: "Alternate contact: main line, 832.393.6600.",
+      keywords: "honorary street sign marker topper memorial"
+    },
+    abandon: {
+      to: "hpw", short: "Street abandonment",
+      title: "Street or alley abandonment",
+      what: "No Planning page covers this. The Development References page links the Joint Referral Committee to Houston Public Works.",
+      say: "Right-of-way abandonments go through Houston Public Works' Joint Referral Committee.",
+      es: "El abandono de derechos de vía se tramita con el Comité de Referencia Conjunta de Obras Públicas de Houston.",
+      note: "Confirm this referral with Development Services: the website only implies Public Works.",
+      keywords: "abandon abandonment alley close street right of way joint referral"
+    },
+
+    /* ---- Maps & data ---- */
+    q_gis: {
+      q: "What kind of map or data?",
+      options: [
+        { label: "Order a map / mapping help", sub: "Custom or printed maps", next: "gis_map" },
+        { label: "Is a property in the city limits?", sub: "City vs. ETJ", next: "city_limits" },
+        { label: "Release from the ETJ / annexation", sub: "Petition", next: "annex" },
+        { label: "Population or Census data", sub: "Demographics, district profiles", next: "demographics" },
+        { label: "Zoning map or zoning letter", sub: "Houston has no zoning", next: "no_zoning" },
+        { label: "Property owner or legal description", sub: "Who owns it", next: "hcad" }
+      ]
+    },
+    gis_map: {
+      to: "gis", short: "Order a map",
+      title: "Order a map or mapping help",
+      what: "GIS makes maps and maintains the City's geographic data. Many maps are self-serve on the City GIS portal.",
+      say: "Call the GIS hotline to order a map, or try the online Map Viewer.",
+      es: "Llame a la línea de GIS para pedir un mapa, o pruebe el visor de mapas en línea.",
+      keywords: "map order print gis"
+    },
+    city_limits: {
+      to: "gis", short: "City limits",
+      title: "City limits or ETJ check",
+      what: "GIS confirms whether a property is inside the city limits or in the ETJ (about 5 miles out). The City reviews plats in the ETJ but doesn't issue building permits there.",
+      say: "GIS can confirm the boundary for you. Call the GIS hotline with the address.",
+      es: "GIS le puede confirmar el límite. Llame a la línea de GIS con la dirección.",
+      need: ["Address or location"],
+      keywords: "city limits etj extraterritorial jurisdiction inside city boundary"
+    },
+    annex: {
+      to: "crp", short: "ETJ release",
+      title: "Annexation or ETJ release petition",
+      what: "ETJ release petitions (SB 2038) are coordinated by Planning. The original petition is filed with the City Secretary.",
+      say: "The annexation coordinator coordinates annexation and ETJ release. Original petitions go to the City Secretary at 900 Bagby, Room P101.",
+      es: "La coordinación de anexión coordina la anexión y la liberación de la ETJ. Las peticiones originales van a la Secretaría de la Ciudad, 900 Bagby, sala P101.",
+      contact: { phone: "832.393.6600", email: "planningdepartment@houstontx.gov", note: "Annexation coordinator" },
+      links: [{ label: "Annexation page", url: P + "/Annexation/index.html" }, { label: "City Secretary", url: "https://www.houstontx.gov/citysec/" }],
+      keywords: "annexation etj release sb 2038 petition"
+    },
+    demographics: {
+      to: "gis", short: "Demographics",
+      title: "Population, Census or district data",
+      what: "Planning publishes population estimates, Census/ACS data, Council District and Super Neighborhood profiles, and residential permit data.",
+      say: "Most of it is posted on the Demographics page. The demographics team can help with specific requests.",
+      es: "La mayor parte está publicada en la página de Demografía. El equipo de demografía le puede ayudar con solicitudes específicas.",
+      contact: { email: "planningdepartment@houstontx.gov" },
+      links: [{ label: "Demographics page", url: P + "/Demographics/index.html" }],
+      keywords: "population census acs demographics data council district profile"
+    },
+    hcad: {
+      to: "hcad", short: "Property owner",
+      title: "Property owner or legal description",
+      what: "Ownership and legal descriptions are on the Harris Central Appraisal District site. Tax records aren't legally binding descriptions.",
+      say: "You can look up the owner and legal description on HCAD's website.",
+      es: "Puede buscar al dueño y la descripción legal en el sitio web de HCAD.",
+      keywords: "owner who owns legal description hcad tax"
+    },
+
+    /* ---- Transportation ---- */
+    q_trans: {
+      q: "What's the transportation question about?",
+      options: [
+        { label: "Future road widening / new streets", sub: "Major Thoroughfare & Freeway Plan", next: "mtfp" },
+        { label: "Bike lanes or the Bike Plan", sub: "Bikeways, advisory committee", next: "bike" },
+        { label: "Letter of support for a project", sub: "Agency endorsement letter", next: "endorse" },
+        { label: "I-45 rebuild (NHHIP)", sub: "City's role vs. TxDOT", next: "nhhip" },
+        { label: "Road construction, potholes, signals", sub: "Existing streets", next: "hpw" },
+        { label: "Buses or rail", sub: "Transit", next: "transit" },
+        { label: "State highways", sub: "Freeways, frontage roads", next: "txdot" }
+      ]
+    },
+    mtfp: {
+      to: "trans", short: "Thoroughfare plan",
+      title: "Major Thoroughfare & Freeway Plan (MTFP)",
+      what: "The long-range plan for major streets and their right-of-way widths. Amendments run on an annual cycle. For 2026: mandatory pre-submittal Jan. 6–Feb. 20, applications Jan. 5–Mar. 6, public hearing Jul. 23, then City Council. The MTFP doesn't set construction schedules.",
+      say: "Transportation Planning handles the thoroughfare plan. Construction timing is a Public Works question.",
+      es: "Planificación de Transporte maneja el plan de vías principales. Las fechas de construcción son con Obras Públicas.",
+      links: [{ label: "MTFP page", url: P + "/transportation/MTFP.html" }],
+      keywords: "mtfp thoroughfare freeway plan widening right of way amendment"
+    },
+    bike: {
+      to: "trans", short: "Bike Plan",
+      title: "Houston Bike Plan & Bicycle Advisory Committee",
+      what: "Planning maintains the Houston Bike Plan and staffs the Bicycle Advisory Committee, which meets quarterly.",
+      say: "Use the Bikeways Hotline or the committee email.",
+      es: "Use la línea de ciclovías o el correo del comité.",
+      contact: { phone: "832.395.2700", email: "bac@houstontx.gov", note: "Bikeways Hotline" },
+      links: [{ label: "Houston Bike Plan", url: P + "/houston_bike_plan/index.html" }],
+      keywords: "bike lane bikeway bicycle advisory committee"
+    },
+    endorse: {
+      to: "trans", short: "Endorsement letter",
+      title: "Transportation project endorsement letter",
+      what: "Agencies request letters of support by emailing the request form to Transportation Planning.",
+      say: "Email the request form to mobility.planning@houstontx.gov.",
+      es: "Envíe el formulario de solicitud por correo a mobility.planning@houstontx.gov.",
+      links: [{ label: "Endorsement letters", url: P + "/transportation/project-endorsement-letters.html" }],
+      keywords: "letter of support endorsement grant"
+    },
+    nhhip: {
+      to: "trans", short: "I-45",
+      title: "I-45 / North Houston Highway Improvement Project",
+      what: "TxDOT runs the project. The City's role is set out in a 2022 agreement. Planning has a summary page.",
+      say: "The project is TxDOT's. The City's role is summarized on our NHHIP page, and the main line can route specific questions.",
+      es: "El proyecto es de TxDOT. El papel de la Ciudad está resumido en nuestra página de NHHIP, y la línea principal puede dirigir preguntas específicas.",
+      contact: { phone: "832.393.6600", note: "Main line" },
+      links: [{ label: "NHHIP page", url: P + "/nhhip/index.html" }, { label: "TxDOT Houston", url: "https://www.txdot.gov/inside-txdot/district/houston.html" }],
+      keywords: "i-45 nhhip highway txdot downtown"
+    },
+    transit: { to: "metro", short: "Transit", title: "Buses, rail or transit service", what: "Transit service is run by METRO.", say: "That's METRO. Here's their website.", es: "Eso lo maneja METRO. Aquí tiene su sitio web.", keywords: "bus rail metro transit stop" },
+    txdot: { to: "txdot", short: "State highways", title: "State highways and freeways", what: "State highways and frontage roads are TxDOT's.", say: "That's TxDOT's Houston District.", es: "Eso lo maneja el Distrito de Houston de TxDOT.", keywords: "highway freeway frontage txdot" },
+
+    /* ---- Notices & meetings ---- */
+    q_meet: {
+      q: "What was the notice or meeting about?",
+      help: "Check the letter or sign. It usually names the commission.",
+      options: [
+        { label: "A plat, replat or variance", sub: "Planning Commission notice or sign", next: "pc_notice" },
+        { label: "A parking variance", sub: "Chapter 26 notice", next: "pc_notice" },
+        { label: "Minimum lot size / building line", sub: "Letter from Community & Regional Planning", next: "smls_notice" },
+        { label: "Historic property", sub: "HAHC meeting", next: "hahc" },
+        { label: "Cell tower", sub: "Tower Commission", next: "tower" },
+        { label: "Yard parking area", sub: "PYP notice / protest", next: "pyp" },
+        { label: "Appeal of a historic decision", sub: "Appeals Board", next: "hist_appeal" }
+      ]
+    },
+    pc_notice: {
+      to: "dev", short: "Planning Commission",
+      title: "Planning Commission notice, comment or speaking",
+      what: "The Planning Commission meets every other Thursday at 2:30 p.m. in the City Hall Annex Council Chamber, 900 Bagby (in person). Agendas post in Plat Tracker about 3 business days ahead. The Commission can't deny a plat because of its intended use, but must deny a replat that violates deed restrictions.",
+      say: "Comments can be emailed to the speaker comments inbox. Speakers sign up at the door and get 2 minutes. Exhibits are due by email 24 hours ahead, 3 pages max.",
+      es: "Puede enviar comentarios por correo al buzón de comentarios. Para hablar, regístrese en la puerta; tendrá 2 minutos. Los documentos se envían por correo 24 horas antes, máximo 3 páginas.",
+      contact: { email: "speakercomments.pc@houstontx.gov" },
+      links: [{ label: "Planning Commission page", url: P + "/Commissions/commiss_plan.html" }, { label: "Agendas (Plat Tracker)", url: "https://plattracker.powerappsportals.us/agenda-documents/" }, { label: "Public notices", url: P + "/notices/" }],
+      keywords: "notice letter sign hearing speak comment planning commission agenda meeting"
+    },
+    smls_notice: {
+      to: "crp", short: "Lot size / building line letter",
+      title: "Letter about a minimum lot size or building line application",
+      what: "Community & Regional Planning mails letters to property owners when a Special Minimum Lot Size (SMLS/SMLSA) or Special Minimum Building Line (SMBL) application covers their block or area. These protections keep new lots from being smaller than the existing pattern, or keep new construction behind an established front building line. Existing homes aren't affected.",
+      say: "That letter is from our Community & Regional Planning team about a minimum lot size or building line application for your block. Their Planner of the Day can explain what it means for your property and how to respond.",
+      es: "Esa carta es de nuestro equipo de Planificación Comunitaria y Regional, sobre una solicitud de tamaño mínimo de lote o línea de construcción para su cuadra. El Planificador del Día de ese equipo le puede explicar qué significa para su propiedad y cómo responder.",
+      need: ["The letter they received", "Property address"],
+      links: [{ label: "Min. lot size / building line page", url: P + "/Min-Lot_Size-Min_Bldg_Line.html" }],
+      cite: "Ch. 42",
+      keywords: "minimum lot size building line letter notice smls smlsa smbl mls mbl block application"
+    },
+    hahc: {
+      to: "hop", short: "HAHC",
+      title: "Historic commission (HAHC) meeting",
+      what: "The Houston Archaeological & Historical Commission decides COAs and reviews designations. It meets at 2:30 p.m. at City Hall Annex. Public comments are due by 5 p.m. the day before.",
+      say: "Comments go to Historic Preservation by 5 p.m. the day before the meeting. Speakers sign up in person.",
+      es: "Los comentarios van a Preservación Histórica antes de las 5 p.m. del día anterior a la reunión. Para hablar, regístrese en persona.",
+      links: [{ label: "HAHC page", url: P + "/Commissions/HAHC.html" }],
+      keywords: "hahc historic commission meeting speak"
+    },
+    tower: {
+      to: "dev", short: "Tower Commission",
+      title: "Cell tower notice or protest",
+      what: "The Tower Commission hears tower waivers and protested tower permits. It usually meets the 4th Monday at 3:30 p.m., only when needed. Comments and speaker sign-up are due 24 hours ahead.",
+      say: "Email the tower inbox with your comments at least 24 hours before the meeting.",
+      es: "Envíe sus comentarios por correo al buzón de torres al menos 24 horas antes de la reunión.",
+      contact: { email: "planning.tower@houstontx.gov" },
+      links: [{ label: "Tower Commission", url: P + "/Commissions/commiss_tower.html" }],
+      keywords: "cell tower protest antenna tower commission"
+    },
+
+    /* ---- Something else ---- */
+    q_other: {
+      q: "Which of these is closest?",
+      options: [
+        { label: "Zoning or a zoning letter", sub: "\"What is my property zoned?\"", next: "no_zoning" },
+        { label: "Building permit or inspection", sub: "Permitting Center", next: "permit" },
+        { label: "Flooding, drainage, utilities", sub: "Public Works", next: "hpw" },
+        { label: "Deed restrictions", sub: "Neighbor or HOA issue", next: "deed" },
+        { label: "Complaint or violation", sub: "311", next: "complaint" },
+        { label: "Public records request", sub: "Copies of City records", next: "records" },
+        { label: "Media / press", sub: "Reporters", next: "media" },
+        { label: "Wants the Director", sub: "Director's Office", next: "director" },
+        { label: "Property owner or legal description", sub: "HCAD", next: "hcad" }
+      ]
+    },
+    no_zoning: {
+      to: "dev", short: "Zoning question",
+      title: "\"What's my property zoned?\"",
+      what: "Houston has no citywide zoning. The exceptions are airport land-use and hazard areas around IAH, Hobby and Ellington, and TIRZ No. 1 (St. George Place). Land use is limited only by private deed restrictions. Chapter 42 controls how land is divided. The official No Zoning Letter can be downloaded.",
+      say: "Houston doesn't have zoning. You can download the official No Zoning Letter and boundary map from our website. For what you can build on a specific lot, the Planner of the Day can help.",
+      es: "Houston no tiene zonificación. Puede descargar la carta oficial de 'No Zoning' y el mapa en nuestro sitio web. Para saber qué puede construir en un lote, el Planificador del Día le puede ayudar.",
+      links: [{ label: "No Zoning Letter & map (PDF)", url: "https://houstontx.gov/planning/DevelopRegs/docs_pdfs/2026/No-Zoning-Letter-and-Boundary-Map-061726.pdf" }],
+      cite: "Ch. 9, Arts. VI–VII (airport areas)",
+      keywords: "zoning zoned zoning letter verification land use no zoning"
+    },
+    records: { to: "records", short: "Open records", title: "Public records request", what: "Open records requests go through the City's GovQA portal.", say: "Submit it online through the City's public information portal.", es: "Preséntela en línea en el portal de información pública de la Ciudad.", keywords: "open records foia public information request copies" },
+    media: {
+      to: "dir", short: "Media",
+      title: "Media inquiry",
+      what: "The department's media contact is the Chief of Staff.",
+      say: "I'll connect you with our Chief of Staff.",
+      es: "Le comunico con la Jefatura de Personal.",
+      contact: { phone: "832.393.6600", email: "planningdepartment@houstontx.gov", note: "Chief of Staff" },
+      keywords: "media press reporter news"
+    },
+    director: { to: "dir", short: "Director", title: "Request for the Director", what: "Director Vonn Tran's office.", say: "I'll connect you with the Director's Office.", es: "Le comunico con la Oficina de Dirección.", keywords: "director vonn tran meeting" }
+  }
+};
+</script>
+
+<header class="bar">
+  <div class="bar-in">
+    <div class="brand"><b>P&amp;D Front Desk Guide</b><span>Route every visitor to the right team</span></div>
+    <div class="seg" role="group" aria-label="Who are you helping?">
+      <button type="button" data-mode="walk" aria-pressed="true">Walk-in</button>
+      <button type="button" data-mode="phone" aria-pressed="false">Phone</button>
+    </div>
+    <div class="seg" role="tablist" aria-label="Views">
+      <button type="button" role="tab" id="tab-route" aria-controls="view-route" aria-selected="true">Route a visitor</button>
+      <button type="button" role="tab" id="tab-divs" aria-controls="view-divs" aria-selected="false" tabindex="-1">Who does what</button>
+    </div>
+    <div class="search" id="bar-search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="q" type="search" placeholder="Search requests and teams" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="results" aria-label="Search requests and teams">
+      <div class="drop hits" id="results" role="listbox" hidden></div>
+    </div>
+    <button type="button" class="size-btn" id="size" aria-pressed="false" aria-label="Larger text" title="Larger text">Aa</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="view-route" role="tabpanel" aria-labelledby="tab-route">
+    <div class="grid">
+      <div class="main-col">
+        <div class="card hero" id="hero">
+          <div class="eyebrow">Step 1</div>
+          <h1 id="hero-h" tabindex="-1">What did the visitor say?</h1>
+          <div class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            <input id="hero-q" type="search" placeholder="Type their words: townhouse, garage, yellow sign, zoning…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="hero-results" aria-label="Type what the visitor said">
+          </div>
+          <div class="hits" id="hero-results" role="listbox" hidden></div>
+          <p class="tip">Press <b>Enter</b> for the top match. Press <b>Esc</b> to leave the box and use number keys for topics.</p>
+        </div>
+        <div id="stage"></div>
+      </div>
+      <aside class="rail" aria-label="Visit details">
+        <div class="card">
+          <div class="eyebrow">Answers so far</div>
+          <ol class="trail" id="trail"></ol>
+          <p class="empty" id="trail-empty">Nothing yet. Search or pick a topic.</p>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Most common at the desk</div>
+          <div class="quick" id="quick"></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">This desk today</div>
+          <div class="today" id="today"></div>
+        </div>
+        <div class="card">
+          <div class="eyebrow">Department</div>
+          <div class="dept" id="dept"></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <section id="view-divs" role="tabpanel" aria-labelledby="tab-divs" hidden></section>
+  <footer id="foot"></footer>
+</main>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="sr-only" id="live" aria-live="polite"></div>
+<div id="slip"></div>
+
+<script>
+(() => {
+  const D = window.FRONT_DESK;
+  const $ = (s) => document.querySelector(s);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const who = (id) => D.divisions[id] || D.external[id];
+  const isExt = (id) => !!D.external[id];
+  const colorOf = (id) => (who(id)?.tone ? `var(--${who(id).tone})` : "var(--d7)");
+  const contactOf = (n) => ({ ...(who(n.to)?.contact || {}), ...(n.contact || {}) });
+  const store = {
+    get(k, d) { try { const v = localStorage.getItem("fdg-" + k); return v === null ? d : JSON.parse(v); } catch { return d; } },
+    set(k, v) { try { localStorage.setItem("fdg-" + k, JSON.stringify(v)); } catch {} }
+  };
+  const inFrame = (() => { try { return window.self !== window.top; } catch { return true; } })();
+  const fmtDate = (iso) => new Date(iso + "T12:00:00").toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" });
+  const NONE = { label: "None of these", sub: "Not covered. Log it and send to the main line", next: "not_listed", none: true };
+
+  for (const [id, words] of Object.entries(D.everyday || {})) if (D.nodes[id]) D.nodes[id].aka = words;
+
+  const prefs = { mode: store.get("mode", "walk"), lang: store.get("lang", "en"), size: store.get("size", "md"), idle: store.get("idle", true) };
+  let path = [{ id: "start", label: null }];
+  let visit = { idx: -1, key: null };
+  let focusNext = false;
+
+  const cur = () => D.nodes[path.at(-1).id];
+  const atStart = () => path.length === 1;
+  function go(id, label) { path.push({ id, label }); focusNext = true; render(); }
+  function back() { if (path.length > 1) { path.pop(); focusNext = true; render(); } }
+  function restart() { path = [{ id: "start", label: null }]; visit = { idx: -1, key: null }; $("#hero-q").value = ""; closeHits(heroSearch); focusNext = true; showTab("route"); render(); }
+  function jump(id, label, via) { path = [{ id: "start", label: null }, { id, label, via }]; focusNext = true; showTab("route"); render(); }
+
+  function announce(t) { const l = $("#live"); l.textContent = ""; setTimeout(() => (l.textContent = t), 30); }
+  function toast(msg) { const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (t.hidden = true), 1800); }
+  function copy(text, btn) {
+    const fallback = () => {
+      const target = btn?.previousElementSibling;
+      if (target) { const r = document.createRange(); r.selectNodeContents(target); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected. Press Ctrl+C"); }
+      else toast("Couldn't copy. Select the text and press Ctrl+C");
+    };
+    try { navigator.clipboard.writeText(text).then(() => toast("Copied"), fallback); } catch { fallback(); }
+  }
+
+  /* ---------- Desk log (stays on this computer) ---------- */
+  function logOutcome(id) {
+    const key = path.map((p) => p.id).join(">");
+    if (visit.key === key) return;
+    const log = store.get("log", []);
+    if (visit.idx >= 0 && log[visit.idx]) { log[visit.idx].id = id; log[visit.idx].mode = prefs.mode; }
+    else { log.push({ t: new Date().toISOString(), id, mode: prefs.mode }); if (log.length > 3000) log.splice(0, log.length - 3000); visit.idx = log.length - 1; }
+    visit.key = key;
+    store.set("log", log); renderToday();
+  }
+  function saveNote(text) {
+    const log = store.get("log", []);
+    if (visit.idx >= 0 && log[visit.idx]) { log[visit.idx].note = text; store.set("log", log); toast("Saved to this desk's log"); renderToday(); }
+  }
+  function todays() { const d = new Date().toDateString(); return store.get("log", []).filter((e) => new Date(e.t).toDateString() === d); }
+  function renderToday() {
+    const t = todays();
+    const counts = {}; t.forEach((e) => (counts[e.id] = (counts[e.id] || 0) + 1));
+    const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    const notes = t.filter((e) => e.note).length;
+    $("#today").innerHTML = `<div><span class="n">${t.length}</span> visitor${t.length === 1 ? "" : "s"} routed</div>
+      ${top.length ? `<ol>${top.map(([id, c]) => `<li>${esc(D.nodes[id]?.short || D.nodes[id]?.title || id)} · ${c}</li>`).join("")}</ol>` : `<p>Counts appear as you route visitors. They stay on this computer.</p>`}
+      ${notes ? `<p>${notes} "not in the guide" note${notes === 1 ? "" : "s"} today</p>` : ""}
+      ${t.length ? `<button type="button" class="btn" data-act="copy-log">Copy today's log</button>` : ""}`;
+  }
+  function logCsv() {
+    const q = (s) => `"${String(s ?? "").replace(/"/g, '""')}"`;
+    return ["Time,Answer,Team,Mode,Note", ...todays().map((e) => [new Date(e.t).toLocaleTimeString(), D.nodes[e.id]?.title, who(D.nodes[e.id]?.to)?.name, e.mode === "phone" ? "Phone" : "Walk-in", e.note].map(q).join(","))].join("\n");
+  }
+
+  /* ---------- Rendering ---------- */
+  function contactHtml(c) {
+    const row = (k, v, mono) => v ? `<div><span>${k}</span>${mono ? `<code>${esc(v)}</code><button type="button" class="copy" data-copy="${esc(v)}">Copy</button>` : esc(v)}</div>` : "";
+    return `<div class="contact">${c.note ? `<div><span>Ask for</span>${esc(c.note)}</div>` : ""}${row("Phone", c.phone, true)}${row("Email", c.email, true)}${row("Where", c.location)}${c.url ? `<div><span>Web</span><a href="${esc(c.url)}" target="_blank" rel="noopener">${esc(c.urlLabel || "Open page")}</a></div>` : ""}</div>`;
+  }
+
+  function renderQuestion(n) {
+    const opts = [...n.options, NONE].map((o) => {
+      const key = o.none ? "0" : String(n.options.indexOf(o) + 1);
+      return `<button type="button" class="opt${o.none ? " none-opt" : ""}" data-next="${esc(o.next)}" data-label="${esc(o.label)}" data-key="${key}">
+        <kbd aria-hidden="true">${key}</kbd><b>${esc(o.label)}</b>${o.sub ? `<small>${esc(o.sub)}</small>` : "<span></span>"}</button>`;
+    }).join("");
+    const start = atStart();
+    const H = start ? "h2" : "h1";
+    return `<div class="card step${start ? " start" : ""}">
+      <div class="eyebrow">${start ? "Or browse" : `Step ${path.length}`}</div>
+      <${H} class="q" id="stage-h" tabindex="-1">${esc(n.q)}</${H}>
+      ${n.help ? `<p class="help">${esc(n.help)}</p>` : ""}
+      <div class="opts">${opts}</div>
+      ${start ? "" : `<div class="nav"><button type="button" class="btn" data-act="back">← Back</button><button type="button" class="btn" data-act="restart">Start over</button></div>`}
+      <div class="hint">Keys: <kbd>1</kbd>–<kbd>9</kbd> pick · <kbd>0</kbd> none of these · <kbd>Backspace</kbd> back · <kbd>Esc</kbd> start over · <kbd>/</kbd> search</div>
+    </div>`;
+  }
+
+  function actionHtml(n) {
+    const w = who(n.to), c = contactOf(n), ext = isExt(n.to);
+    let k, v, s;
+    if (prefs.mode === "phone") {
+      k = ext ? "Refer caller to" : "Transfer caller to";
+      if (c.phone) {
+        v = `<code class="big">${esc(c.phone)}</code><button type="button" class="copy" data-copy="${esc(c.phone)}">Copy</button>`;
+        s = [w?.name, c.note, c.email && `or email ${c.email}`].filter(Boolean).map(esc).join(" · ");
+      } else if (c.email) {
+        v = `<code class="big sm">${esc(c.email)}</code><button type="button" class="copy" data-copy="${esc(c.email)}">Copy</button>`;
+        s = `${esc(w?.name)} · no phone listed, give them the email`;
+      } else {
+        v = `<span class="big">${esc(w?.name)}</span>`;
+        s = `No phone listed. Give them the website: ${esc(c.urlLabel || c.url || "")}`;
+      }
+    } else {
+      k = ext ? "Refer visitor to" : "Send visitor to";
+      const far = /1002 Washington|900 Bagby/.test(c.location || "");
+      v = `<span class="big">${esc(w?.name)}</span>${far ? `<span class="flag">Different building</span>` : ""}`;
+      s = c.location ? esc([c.location, !ext && c.note ? `ask for ${c.note}` : ""].filter(Boolean).join(" · ")) : "Not handled in person here. Give them the contact details below.";
+    }
+    return `<div class="act${ext ? " ext" : ""}">
+      <div><div class="act-k">${k}</div><div class="act-v">${v}</div><div class="act-s">${s}</div></div>
+      <div class="act-btns">
+        <button type="button" class="btn" data-act="handoff">Copy handoff note</button>
+        ${inFrame ? "" : `<button type="button" class="btn" data-act="print">Print slip</button>`}
+        <button type="button" class="btn primary" data-act="restart">Next visitor</button>
+      </div>
+    </div>`;
+  }
+
+  function renderOutcome(n) {
+    const w = who(n.to), ext = isExt(n.to), es = prefs.lang === "es";
+    const list = (title, arr) => arr?.length ? `<div class="block"><h3>${title}</h3><ul>${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>` : "";
+    const links = n.links?.length ? `<div class="block"><h3>Links to give them</h3><ul>${n.links.map((l) => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a></li>`).join("")}</ul></div>` : "";
+    const ver = n.verified || D.meta.verified;
+    const age = (Date.now() - new Date(ver + "T12:00:00")) / 864e5;
+    const script = es ? (n.es || `Todavía no hay guion en español para esta respuesta. Línea en español: ${D.meta.spanish}.`) : n.say;
+    return `<article class="card out">
+      ${actionHtml(n)}
+      <div class="out-head">
+        <span class="chip ${ext ? "ext" : ""}" style="--c:${colorOf(n.to)}"><i></i>${ext ? "Outside P&amp;D" : "P&amp;D team"}: ${esc(w?.name || n.to)}</span>
+        <h1 class="out-title" id="stage-h" tabindex="-1">${esc(n.title)}</h1>
+        ${n.what ? `<p class="help" style="margin:0">${esc(n.what)}</p>` : ""}
+      </div>
+      <div class="out-body">
+        ${script ? `<div class="say">
+          <div class="say-h"><span class="eyebrow">${es ? "Dígale al visitante" : "Tell the visitor"}</span>
+            <div class="seg sm" role="group" aria-label="Script language"><button type="button" data-lang="en" aria-pressed="${!es}">English</button><button type="button" data-lang="es" aria-pressed="${es}">Español</button></div></div>
+          <p lang="${es ? "es" : "en"}">${esc(script)}</p>
+          ${es ? `<div class="say-note">Spanish draft. Have a bilingual staff member review it. Spanish line: ${esc(D.meta.spanish)}</div>` : ""}
+        </div>` : ""}
+        ${n.capture ? `<div class="capture"><label for="miss-note">What did they ask for? This is saved to this desk's log so the guide can be updated.</label><textarea id="miss-note" rows="2" placeholder="e.g. Asked about a fence permit for a corner lot"></textarea><button type="button" class="btn" data-act="save-note">Save note</button></div>` : ""}
+        <div class="cols">
+          <div class="block"><h3>Contact</h3>${contactHtml(contactOf(n))}</div>
+          ${list("They should bring / have ready", n.need)}
+          ${links}
+        </div>
+        ${n.cite ? `<div><span class="cite">${esc(n.cite)}</span></div>` : ""}
+        ${n.note ? `<div class="note">${esc(n.note)}</div>` : ""}
+        <div class="meta-line">${ext ? "Referral" : `Owner: ${esc(w?.name)}`} · Verified ${esc(fmtDate(ver))}${age > 180 ? ` · <span class="stale">Over 6 months old. Check before relying on it.</span>` : ""}</div>
+        <div class="nav" style="margin-top:0"><button type="button" class="btn" data-act="back">← Back</button></div>
+      </div>
+    </article>`;
+  }
+
+  function handoffText() {
+    const n = cur(); const w = who(n.to); const c = contactOf(n);
+    const lines = [`Front desk handoff (${prefs.mode === "phone" ? "phone" : "walk-in"}): ${n.title}`, `Route to: ${w?.name || n.to}${c.note ? ` (${c.note})` : ""}`];
+    const steps = path.slice(1).map((p, i) => `  ${i + 1}. ${p.via || (i === 0 ? "Topic" : D.nodes[path[i].id]?.q)} → ${p.label}`);
+    if (steps.length) lines.push("Visitor said:", ...steps);
+    const note = $("#miss-note")?.value.trim(); if (note) lines.push(`Note: ${note}`);
+    if (c.phone) lines.push(`Phone: ${c.phone}`);
+    if (c.email) lines.push(`Email: ${c.email}`);
+    lines.push(`Logged: ${new Date().toLocaleString()}`);
+    return lines.join("\n");
+  }
+
+  function printSlip() {
+    const n = cur(), w = who(n.to), c = contactOf(n);
+    const p = (k, v) => v ? `<p><b>${k}:</b> ${esc(v)}</p>` : "";
+    $("#slip").innerHTML = `<h1>Your next step</h1><h2>${esc(n.title)}</h2>
+      ${p("Who can help", w?.name + (c.note ? ` (${c.note})` : ""))}${p("Where", c.location)}${p("Phone", c.phone)}${p("Email", c.email)}
+      ${n.need?.length ? `<p><b>Bring or have ready:</b></p><ul>${n.need.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      ${n.links?.length ? `<p><b>Online:</b></p><ul>${n.links.map((l) => `<li>${esc(l.label)}: ${esc(l.url)}</li>`).join("")}</ul>` : ""}
+      <p class="foot">${esc(D.meta.dept)} · ${esc(D.meta.address)} · ${esc(D.meta.phone)} · Español ${esc(D.meta.spanish)} · ${esc(D.meta.hours)} · Printed ${new Date().toLocaleDateString()}</p>`;
+    window.print();
+  }
+
+  function render() {
+    const n = cur();
+    const start = atStart();
+    $("#hero").hidden = !start;
+    $("#bar-search").hidden = start && !$("#view-route").hidden;
+    $("#stage").innerHTML = !n
+      ? `<div class="card step"><h1 class="q" id="stage-h" tabindex="-1">Missing step "${esc(path.at(-1).id)}"</h1><p class="help">This answer points to a node that isn't in the routing data. Fix the "next" value in the data block.</p><div class="nav"><button type="button" class="btn" data-act="back">← Back</button></div></div>`
+      : n.options ? renderQuestion(n) : renderOutcome(n);
+    const steps = path.slice(1);
+    $("#trail").innerHTML = steps.map((p, i) => `<li><button type="button" data-trail="${i + 1}"><span class="tq">${esc(p.via || (i === 0 ? "Topic" : D.nodes[path[i].id]?.q))}</span><span class="ta">${esc(p.label)}</span></button></li>`).join("");
+    $("#trail-empty").hidden = steps.length > 0;
+    if (n && !n.options) logOutcome(path.at(-1).id);
+    if (focusNext) {
+      focusNext = false;
+      if (start) $("#hero-q").focus(); else $("#stage-h")?.focus();
+      announce(start ? "Ready for the next visitor" : n?.options ? `Step ${path.length}: ${n.q}` : `Answer: ${n?.title}`);
+    }
+  }
+
+  function renderDivisions() {
+    const card = (id, d) => {
+      const outs = Object.entries(D.nodes).filter(([, n]) => n.to === id);
+      return `<article class="card div" id="team-${esc(id)}" style="--c:${colorOf(id)}">
+        <h2>${esc(d.name)}</h2>
+        <p>${esc(d.summary)}</p>
+        ${d.handles?.length ? `<div class="block"><h3>Handles</h3><ul>${d.handles.map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>` : ""}
+        ${d.notThem?.length ? `<div class="block"><h3>Often confused with</h3><ul>${d.notThem.map((h) => `<li>${esc(h)}</li>`).join("")}</ul></div>` : ""}
+        <div class="block"><h3>Contact</h3>${contactHtml(d.contact || {})}</div>
+        ${outs.length ? `<div class="block"><h3>Desk answers that route here</h3><div class="handles">${outs.map(([nid, n]) => `<button type="button" data-jump="${esc(nid)}">${esc(n.title)}</button>`).join("")}</div></div>` : ""}
+      </article>`;
+    };
+    const m = D.meta;
+    $("#view-divs").innerHTML = `
+      <div class="sec-head"><h1>Who does what</h1><p>Every team in the department, what they handle, and how to reach them.</p></div>
+      <div class="divs">${Object.entries(D.divisions).filter(([, d]) => !d.hidden).map(([id, d]) => card(id, d)).join("")}</div>
+      <div class="sec-head" style="margin-top:30px"><h1>Not P&amp;D: where to refer</h1><p>Requests that come to our desk but belong to another department or agency.</p></div>
+      <div class="divs ext">${Object.entries(D.external).map(([id, d]) => card(id, d)).join("")}</div>
+      ${m.gaps?.length ? `<div class="card gaps"><div class="eyebrow">To confirm before rollout</div><p>The department website didn't settle these. Check them with the right team and update the routing data.</p><ul>${m.gaps.map((g) => `<li>${esc(g)}</li>`).join("")}</ul></div>` : ""}`;
+  }
+
+  /* ---------- Search ---------- */
+  const index = [
+    ...Object.entries(D.nodes).filter(([, n]) => n.to).map(([id, n]) => ({ kind: "answer", id, title: n.title, sub: who(n.to)?.name || "", t: n.title.toLowerCase(), kw: [n.keywords, n.aka].filter(Boolean).join(" ").toLowerCase(), hay: [n.title, n.what, n.say, n.keywords, n.aka, n.cite, who(n.to)?.name].filter(Boolean).join(" ").toLowerCase() })),
+    ...Object.entries({ ...D.divisions, ...D.external }).filter(([, d]) => !d.hidden).map(([id, d]) => ({ kind: "team", id, title: d.name, sub: isExt(id) ? "Outside referral · team" : "P&D team", t: d.name.toLowerCase(), kw: (d.keywords || "").toLowerCase(), hay: [d.name, d.summary, ...(d.handles || []), d.keywords].filter(Boolean).join(" ").toLowerCase() })),
+  ];
+  const stem = (w) => (w.length > 4 ? w.replace(/(es|s)$/, "") : w);
+  function search(term, max) {
+    const words = term.toLowerCase().replace(/[^\w\s-]/g, " ").split(/\s+/).filter((w) => w.length > 1 && !["my", "the", "a", "an", "to", "of", "for", "i", "on", "in", "is", "and"].includes(w)).map(stem);
+    if (!words.length) return [];
+    return index.map((x) => ({ x, s: words.reduce((a, w) => a + (x.t.includes(w) ? 3 : 0) + (x.kw.includes(w) ? 2 : 0) + (x.hay.includes(w) ? 1 : 0), 0) - (x.kind === "team" ? 1 : 0), all: words.every((w) => x.hay.includes(w)) }))
+      .filter((h) => h.all).sort((a, b) => b.s - a.s).slice(0, max).map((h) => h.x);
+  }
+  function makeSearch(input, box, max) {
+    const st = { input, box, hits: [], sel: 0 };
+    const show = () => {
+      const term = input.value.trim();
+      if (!term) return closeHits(st);
+      st.hits = search(term, max); st.sel = 0;
+      box.innerHTML = st.hits.length
+        ? st.hits.map((h, i) => `<button type="button" role="option" id="${box.id}-${i}" data-hit="${i}" aria-selected="${i === 0}" class="${i === 0 ? "on" : ""}"><span class="hit-t">${esc(h.title)}</span><span class="hit-s">${esc(h.sub)}</span></button>`).join("")
+        : `<div class="none">No match for “${esc(term)}”. Try a different word, pick a topic, or choose “None of these”.</div>`;
+      box.hidden = false; input.setAttribute("aria-expanded", "true");
+      input.setAttribute("aria-activedescendant", st.hits.length ? `${box.id}-0` : "");
+    };
+    input.addEventListener("input", show);
+    input.addEventListener("keydown", (e) => {
+      const btns = [...box.querySelectorAll("[data-hit]")];
+      if ((e.key === "ArrowDown" || e.key === "ArrowUp") && btns.length) {
+        e.preventDefault(); st.sel = (st.sel + (e.key === "ArrowDown" ? 1 : btns.length - 1)) % btns.length;
+        btns.forEach((b, i) => { b.classList.toggle("on", i === st.sel); b.setAttribute("aria-selected", i === st.sel); });
+        input.setAttribute("aria-activedescendant", `${box.id}-${st.sel}`);
+      } else if (e.key === "Enter" && st.hits[st.sel]) { e.preventDefault(); openHit(st, st.hits[st.sel]); }
+      else if (e.key === "Escape") { e.stopPropagation(); input.value = ""; closeHits(st); input.blur(); }
+    });
+    box.addEventListener("click", (e) => { const b = e.target.closest("[data-hit]"); if (b) openHit(st, st.hits[+b.dataset.hit]); });
+    return st;
+  }
+  function closeHits(st) { st.box.hidden = true; st.box.innerHTML = ""; st.input.setAttribute("aria-expanded", "false"); }
+  function openHit(st, h) {
+    const term = st.input.value.trim();
+    st.input.value = ""; closeHits(st);
+    if (h.kind === "answer") jump(h.id, `“${term}”`, "Searched for");
+    else { showTab("divs"); const el = document.getElementById(`team-${h.id}`); el?.scrollIntoView({ block: "start" }); }
+  }
+
+  function showTab(t) {
+    const route = t === "route";
+    $("#tab-route").setAttribute("aria-selected", route); $("#tab-divs").setAttribute("aria-selected", !route);
+    $("#tab-route").tabIndex = route ? 0 : -1; $("#tab-divs").tabIndex = route ? -1 : 0;
+    $("#view-route").hidden = !route; $("#view-divs").hidden = route;
+    $("#bar-search").hidden = route && atStart();
+  }
+
+  function applyPrefs() {
+    document.querySelectorAll("[data-mode]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.mode === prefs.mode));
+    if (prefs.size === "lg") document.documentElement.dataset.size = "lg"; else delete document.documentElement.dataset.size;
+    $("#size").setAttribute("aria-pressed", prefs.size === "lg");
+  }
+
+  /* ---------- Events ---------- */
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.next) go(b.dataset.next, b.dataset.label);
+    else if (b.dataset.act === "back") back();
+    else if (b.dataset.act === "restart") restart();
+    else if (b.dataset.act === "handoff") copy(handoffText());
+    else if (b.dataset.act === "print") printSlip();
+    else if (b.dataset.act === "save-note") { const v = $("#miss-note").value.trim(); if (v) saveNote(v); else toast("Type what they asked for first"); }
+    else if (b.dataset.act === "copy-log") copy(logCsv());
+    else if (b.dataset.trail) { path = path.slice(0, +b.dataset.trail); focusNext = true; render(); }
+    else if (b.dataset.jump) jump(b.dataset.jump, D.nodes[b.dataset.jump]?.title, "Picked from list");
+    else if (b.dataset.copy) copy(b.dataset.copy, b);
+    else if (b.dataset.mode) { prefs.mode = b.dataset.mode; store.set("mode", prefs.mode); applyPrefs(); render(); }
+    else if (b.dataset.lang) { prefs.lang = b.dataset.lang; store.set("lang", prefs.lang); render(); }
+    else if (b.id === "size") { prefs.size = prefs.size === "lg" ? "md" : "lg"; store.set("size", prefs.size); applyPrefs(); }
+    else if (b.id === "tab-route") showTab("route");
+    else if (b.id === "tab-divs") showTab("divs");
+  });
+  $("[role=tablist]").addEventListener("keydown", (e) => {
+    if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+    const next = $("#tab-route").getAttribute("aria-selected") === "true" ? "divs" : "route";
+    showTab(next); $(next === "route" ? "#tab-route" : "#tab-divs").focus();
+  });
+  const heroSearch = makeSearch($("#hero-q"), $("#hero-results"), 6);
+  const barSearch = makeSearch($("#q"), $("#results"), 10);
+  document.addEventListener("click", (e) => { if (!e.target.closest("#bar-search")) closeHits(barSearch); });
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest?.("input, textarea")) return;
+    if (e.key === "/") { e.preventDefault(); (atStart() && !$("#view-route").hidden ? $("#hero-q") : $("#q")).focus(); return; }
+    if ($("#view-route").hidden || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key === "Escape") restart();
+    else if (e.key === "Backspace") { e.preventDefault(); back(); }
+    else if (/^[0-9]$/.test(e.key)) document.querySelector(`#stage .opt[data-key="${e.key}"]`)?.click();
+  });
+
+  // Reset to the start after 2 minutes idle (shared desk computer)
+  let lastActive = Date.now();
+  ["pointerdown", "keydown", "input"].forEach((ev) => document.addEventListener(ev, () => (lastActive = Date.now()), true));
+  setInterval(() => {
+    if (prefs.idle && (!atStart() || $("#hero-q").value) && Date.now() - lastActive > 120000) { restart(); toast("Reset for the next visitor"); }
+  }, 5000);
+
+  /* ---------- Static parts ---------- */
+  const m = D.meta;
+  $("#quick").innerHTML = (D.common || []).filter((id) => D.nodes[id]).map((id) => `<button type="button" data-jump="${esc(id)}">${esc(D.nodes[id].short || D.nodes[id].title)}</button>`).join("");
+  $("#dept").innerHTML = [`<b>${esc(m.dept)}</b>`, esc(m.address), `<span>Main <code>${esc(m.phone)}</code></span>`, `<span>Español <code>${esc(m.spanish)}</code></span>`, `<code>${esc(m.email)}</code>`, `<span>Hours ${esc(m.hours)}</span>`, `<a href="${esc(m.site)}" target="_blank" rel="noopener">Department website</a>`].map((x) => `<div>${x}</div>`).join("");
+  $("#foot").innerHTML = `<span>Routing rules verified ${esc(fmtDate(m.verified))} against the department website.</span>
+    <label><input type="checkbox" id="idle"${prefs.idle ? " checked" : ""}> Reset to start after 2 minutes idle</label>
+    <span>Unofficial internal reference tool. Confirm fees and deadlines on the official site.</span>`;
+  $("#idle").addEventListener("change", (e) => { prefs.idle = e.target.checked; store.set("idle", prefs.idle); });
+  applyPrefs();
+  renderDivisions();
+  renderToday();
+  render();
+})();
+</script>
